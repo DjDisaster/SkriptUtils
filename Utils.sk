@@ -1,3 +1,6 @@
+# Version: 1.0
+# Do not delete the version line.
+
 # Skript utilities 
 # By DjDisaster 
 # Designs to make skripting easier 
@@ -19,11 +22,48 @@
 # Output: -1.23k
 
 
+import:
+	java.lang.Character
+	java.lang.StringBuilder
+	java.io.Closeable
+	javax.tools.ToolProvider
+	javax.tools.JavaFileObject
+	javax.tools.StandardJavaFileManager	
+	java.io.FileWriter
+	java.io.File
+	java.lang.Class
+	java.util.ArrayList
+	java.nio.file.Files
+	java.nio.charset.StandardCharsets
+	org.bukkit.Bukkit
+	java.util.List
+	org.bukkit.plugin.java.JavaPlugin
+	java.net.URLClassLoader
+	com.btk5h.skriptmirror.util.lookup.LookupGetter
+	java.nio.file.Path
+	org.apache.commons.io.FileUtils
+	java.io.FileOutputStream
+	java.nio.channels.ReadableByteChannel
+	java.nio.channels.Channels
+	java.net.URL
+	java.util.regex.Matcher
+	java.util.regex.Pattern
+	java.nio.file.StandardCopyOption
+	java.nio.file.Paths
+	java.io.InputStream
+	java.util.zip.ZipEntry
+	java.util.zip.ZipInputStream
+	java.io.FileInputStream
+	org.apache.commons.io.IOUtils
+
 on load:
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 	set {DJUtils::SmallCaps::*} to "ᴀ|ʙ|ᴄ|ᴅ|ᴇ|ғ|ɢ|ʜ|ɪ|ᴊ|ᴋ|ʟ|ᴍ|ɴ|ᴏ|ᴘ|ǫ|ʀ|s|ᴛ|ᴜ|ᴠ|ᴡ|x|ʏ|ᴢ" split at "|"
 	set {DJUtils::NumberFormat::*} to (",k,m,b,t,qa,qn,sx,sp,oc,no,dc,ud,dd,td,qad,qnd,sxd,spd,ocd,nod,vg,unvg,dovg,trvg,quatvg,quinv,sexvg,septvg,octvg,novvg,trig,untrig,dotrig,tetrig,quatrig,quintrig,sextrig,septrig,octrig,novtrig,quadg,unquadg,doquadg,tequadg,quadorquadg,quinquadg,sexquadg,sepquadg,octoquadg,novquadg,quinquag,unquinquag,doquinquag,tequinquag,quadoquinquag,quinquinquag,sexquinquag,sepquinquag,octoquinquag,novquinquag,sexag,unsexag,dosexag,tesexag,quadsexag,quinsexag,sexsexag,sepsexag,octosexag,novsexag,septg,unseptg,doseptg,teseptg,quadoseptg,quinseptg,sexseptg,sepseptg,octoseptg,novseptg,octog,unoctog,dooctog,teoctog,quadoctog,quinoctog,sexoctog,sepoctog,octooctog,novoctog,nonag,unnonag,dononag,tenonag,quadononag,quinnonag,sexnonag,sepnonag,octononag,novnonag,centg,uncentg" split at ",")
+	set {DJUtils::FileName} to name of script
+	set {DJUtils::Version} to "1.0"
+
 local function Format(n: num) :: string:
 	return minimessage from "<rainbow>INFINITY" if {_n} >= (10 ^ 308.0)
 	return NegativeFormat({_n}) if {_n} < 0
@@ -47,3 +87,31 @@ expression formatted %number%:
 	return type: string 
 	get:
 		return Format(expr-1)
+
+on join:
+	set {_latestVersion} to FetchVersion()
+	
+function FetchVersion():
+	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
+	set {_inStream} to new URL({_link})
+	set {_inStream} to {_inStream}.openStream()
+	set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
+	broadcast "%{_inStream}% - %class of {_inStream}% -- %{_result}%"
+command /JavaSkript [<text>]:
+	permision: admin.perms
+	trigger:
+		if arg-1 = "Update":
+			set {_f} to "plugins/Skript/scripts/%{DJUtils::FileName}%.sk"
+			set {_file} to new File({_f})
+			
+			set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
+			set {_inStream} to new URL({_link})
+			set {_inStream} to {_inStream}.openStream()
+			Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
+			send "&7Skript in &e&n%{_f}%&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
+		else:
+			send "&4[&c------------------&4]"
+			send "&3Invalid command out of:"
+			send "&3/JavaSkript Update"
+			send "&4[&c------------------&4]"
+			
