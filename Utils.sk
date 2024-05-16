@@ -1,4 +1,4 @@
-# Version: 1.1
+# Version: 1.0
 # Do not delete the version line.
 
 # Skript utilities 
@@ -89,12 +89,14 @@ expression formatted %number%:
 		return Format(expr-1)
 
 on join:
-	set {_latestVersion} to FetchVersion()
-	if {_latestVersion} != {DJUtils::Version}:
-		send "&7Your utility file &e%{DJUtils::Version}% &7is out of date! &e/DJUtils Update &7to update it!"
+	wait a second
+	if player is op:
+		set {_latestVersion} to FetchVersion()
+		if {_latestVersion} != {DJUtils::Version}:
+			send "&cYour utility file &4%{DJUtils::FileName}%.sk &cis out of date! &cYou can use &4/DJUtils Update &cto update automatically!"
 	
 function FetchVersion() :: string:
-	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk?v=1"
+	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
 	set {_inStream} to new URL({_link})
 	set {_inStream} to {_inStream}.openStream()
 	set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
@@ -102,10 +104,14 @@ function FetchVersion() :: string:
 	set {_result} to 2nd element out of ({_result} split at "Version: ")
 	return {_result}
 	
-command /DJUtils [<text>]:
+command /DJUtils [<text>] [<text>]:
 	permission: admin.perms
 	trigger:
 		if arg-1 = "Update":
+			if FetchVersion() = {DJUtils::Version}:
+				send "&cYou are already on the latest version!"
+				send "&cIf a new version was released, it may take up to 5 minutes"
+				send "&cTo refresh due to github caching."
 			set {_f} to "plugins/Skript/scripts/%{DJUtils::FileName}%.sk"
 			set {_file} to new File({_f})
 			
@@ -114,9 +120,15 @@ command /DJUtils [<text>]:
 			set {_inStream} to {_inStream}.openStream()
 			Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
 			send "&7Skript in &e&n%{_f}%&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
+			send "%nl%&7Would you like to reload the script? &e/DJUtils Reload"
+		else if arg-1 = "Reload":
+			set {_t} to now
+			reload script {DJUtils::FileName}
+			send "&4%{DJUtils::FileName}%.sk &chas been reloaded in &4%difference between now and {_t}%"
 		else:
 			send "&4[&c------------------&4]"
 			send "&3Invalid command out of:"
-			send "&3/JavaSkript Update"
+			send "&3/DJUtils Update"
+			send "&3/DJUtils Reload"
 			send "&4[&c------------------&4]"
 			
