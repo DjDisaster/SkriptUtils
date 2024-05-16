@@ -96,6 +96,7 @@ function FetchVersion():
 	set {_inStream} to new URL({_link})
 	set {_inStream} to {_inStream}.openStream()
 	set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
+	set {_result} to first element out of ({_result} split at nl)
 	broadcast "%{_inStream}% - %class of {_inStream}% -- %{_result}%"
 command /JavaSkript [<text>]:
 	permision: admin.perms
