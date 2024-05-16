@@ -112,6 +112,7 @@ command /DJUtils [<text>] [<text>]:
 				send "&cYou are already on the latest version!"
 				send "&cIf a new version was released, it may take up to 5 minutes"
 				send "&cTo refresh due to github caching."
+				stop
 			set {_f} to "plugins/Skript/scripts/%{DJUtils::FileName}%.sk"
 			set {_file} to new File({_f})
 			
