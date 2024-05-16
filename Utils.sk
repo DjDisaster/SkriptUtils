@@ -90,16 +90,20 @@ expression formatted %number%:
 
 on join:
 	set {_latestVersion} to FetchVersion()
+	if {_latestVersion} != {DJUtils::Version}:
+		send "&7Your utility file &e%{DJUtils::Version}% &7is out of date! &e/DJUtils Update &7to update it!"
 	
-function FetchVersion():
-	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
+function FetchVersion() :: string:
+	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk?v=1"
 	set {_inStream} to new URL({_link})
 	set {_inStream} to {_inStream}.openStream()
 	set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
 	set {_result} to first element out of ({_result} split at nl)
-	broadcast "%{_inStream}% - %class of {_inStream}% -- %{_result}%"
-command /JavaSkript [<text>]:
-	permision: admin.perms
+	set {_result} to 2nd element out of ({_result} split at "Version: ")
+	return {_result}
+	
+command /DJUtils [<text>]:
+	permission: admin.perms
 	trigger:
 		if arg-1 = "Update":
 			set {_f} to "plugins/Skript/scripts/%{DJUtils::FileName}%.sk"
