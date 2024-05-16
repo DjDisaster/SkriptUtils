@@ -1,4 +1,4 @@
-# Version: 1.0
+# Version: beta-1
 # Do not delete the version line.
 
 # Skript utilities 
@@ -23,37 +23,11 @@
 
 
 import:
-	java.lang.Character
-	java.lang.StringBuilder
-	java.io.Closeable
-	javax.tools.ToolProvider
-	javax.tools.JavaFileObject
-	javax.tools.StandardJavaFileManager	
-	java.io.FileWriter
 	java.io.File
-	java.lang.Class
-	java.util.ArrayList
 	java.nio.file.Files
 	java.nio.charset.StandardCharsets
-	org.bukkit.Bukkit
-	java.util.List
-	org.bukkit.plugin.java.JavaPlugin
-	java.net.URLClassLoader
-	com.btk5h.skriptmirror.util.lookup.LookupGetter
-	java.nio.file.Path
-	org.apache.commons.io.FileUtils
-	java.io.FileOutputStream
-	java.nio.channels.ReadableByteChannel
-	java.nio.channels.Channels
 	java.net.URL
-	java.util.regex.Matcher
-	java.util.regex.Pattern
 	java.nio.file.StandardCopyOption
-	java.nio.file.Paths
-	java.io.InputStream
-	java.util.zip.ZipEntry
-	java.util.zip.ZipInputStream
-	java.io.FileInputStream
 	org.apache.commons.io.IOUtils
 
 on load:
@@ -65,11 +39,12 @@ on load:
 	set {DJUtils::Version} to "1.0"
 
 local function Format(n: num) :: string:
-	return minimessage from "<rainbow>INFINITY" if {_n} >= (10 ^ 308.0)
+	return "%{_n}%" if {_n} = (10.0 ^ 309.0) or (-10.0 ^ 309.0)
 	return NegativeFormat({_n}) if {_n} < 0
-	return "%{_n}%" if {_n} < 1000
+	return "%{_n}%" if {_n} < 1
 	set {_c} to (floor(log({_n}, 1000)))
 	return "%(({_n} / (1000.0^(({_c}) - 1))) / 1000)%%{DJUtils::NumberFormat::%({_c}+1)%}%"
+	
 local function NegativeFormat(n: number) :: string:
 	set {_abs} to abs({_n})
 	return join "-", Format({_abs})
@@ -107,11 +82,23 @@ function FetchVersion() :: string:
 command /DJUtils [<text>] [<text>]:
 	permission: admin.perms
 	trigger:
+		if arg-1 = "Info":
+			send "&4[&c------------------&4]"
+			send "&3Version: %{DJUtils::Version}%"
+			send "&3"
+			send "&3/DJUtils Update"
+			send "&3/DJUtils Reload"
+			send "&4[&c------------------&4]"
+		if arg-1 = "Discord":
+			send "&4[&c------------------&4]"
+			send "&3Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
+			send "&4[&c------------------&4]"
 		if arg-1 = "Update":
 			if FetchVersion() = {DJUtils::Version}:
-				send "&cYou are already on the latest version!"
-				send "&cIf a new version was released, it may take up to 5 minutes"
-				send "&cTo refresh due to github caching."
+				send "&4[&c----------------------------------&4]"
+				send "&3You are already on the latest version."
+				send "&3New version? Try waiting 5 minutes"
+				send "&4[&c----------------------------------&4]"
 				stop
 			set {_f} to "plugins/Skript/scripts/%{DJUtils::FileName}%.sk"
 			set {_file} to new File({_f})
@@ -129,7 +116,9 @@ command /DJUtils [<text>] [<text>]:
 		else:
 			send "&4[&c------------------&4]"
 			send "&3Invalid command out of:"
+			send "&3/DJUtils Info"
 			send "&3/DJUtils Update"
 			send "&3/DJUtils Reload"
+			send "&3/DJUtils Discord"
 			send "&4[&c------------------&4]"
 			
