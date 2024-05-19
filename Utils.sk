@@ -37,6 +37,26 @@ on load:
 	set {DJUtils::NumberFormat::*} to (",k,m,b,t,qa,qn,sx,sp,oc,no,dc,ud,dd,td,qad,qnd,sxd,spd,ocd,nod,vg,unvg,dovg,trvg,quatvg,quinv,sexvg,septvg,octvg,novvg,trig,untrig,dotrig,tetrig,quatrig,quintrig,sextrig,septrig,octrig,novtrig,quadg,unquadg,doquadg,tequadg,quadorquadg,quinquadg,sexquadg,sepquadg,octoquadg,novquadg,quinquag,unquinquag,doquinquag,tequinquag,quadoquinquag,quinquinquag,sexquinquag,sepquinquag,octoquinquag,novquinquag,sexag,unsexag,dosexag,tesexag,quadsexag,quinsexag,sexsexag,sepsexag,octosexag,novsexag,septg,unseptg,doseptg,teseptg,quadoseptg,quinseptg,sexseptg,sepseptg,octoseptg,novseptg,octog,unoctog,dooctog,teoctog,quadoctog,quinoctog,sexoctog,sepoctog,octooctog,novoctog,nonag,unnonag,dononag,tenonag,quadononag,quinnonag,sexnonag,sepnonag,octononag,novnonag,centg,uncentg" split at ",")
 	set {DJUtils::FileName} to name of script
 	set {DJUtils::Version} to "1.0"
+	
+	# Takes 45.44 days to crack an IP with skript 
+	# Can be done a lot faster, but its probably 
+	# still nicer to include something (by faster 
+	# I mean itd probably take minutes per IP)
+	# Minehut will mask IPS anyway	
+	if {DJUtils::Salt} is not set:
+		set {_c::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9"
+		set {_s} to ""
+		loop 16 times:
+			set {_s} to join {_s}, (random element out of {_c::*}) 
+		set {DJUtils::Salt} to {_s}
+		
+on join:
+	set {_hash} to join ({DJUtils::Salt}, ip of player) 
+	loop 1000 times:
+		set {_hash} to {_hash} hashed with SHA-256
+	if {DJUtils::IpAddresses::%{_hash}%::*} does not contain player's uuid:
+		add player's uuid to {DJUtils::IpAddresses::%{_hash}%::*} 
+	set {DJUtils::IpAddresses::%player's uuid%} to {_hash}
 
 local function Format(n: num) :: string:
 	return "%{_n}%" if {_n} = (10.0 ^ 309.0) or (-10.0 ^ 309.0)
@@ -57,6 +77,29 @@ expression small [caps ]of %string%:
 			replace all loop-value in {_string} with {SmallCaps::%loop-index%}
 		return {_string}
 		
+expression alts of %offline player%:
+	return type: offline players 
+	get:
+		set {_hashedIP} to {DJUtils::IpAddresses::%expr-1's uuid%}
+		loop {DJUtils::IpAddresses::%{_hashedIP}%::*}:
+			add loop-value parsed as offline player to {_p::*}
+		return {_p::*}
+
+on load:
+	set {_toMatch} to join ({DJUtils::Salt}, (ip of "DjDisaster" parsed as player)) hashed with SHA-256
+	set {c} to 0
+	set {_n} to now
+	loop 8 times:
+		loop 8 times:
+			loop 8 times:
+				loop 8 times:
+					set {_ip} to "%loop-value-1%.%loop-value-2%.%loop-value-3%.%loop-value-4%"
+					set {_hash} to join ({DJUtils::Salt}, {_ip}) 
+					loop 1000 times:
+						set {_hash} to {_hash} hashed with SHA-256
+					
+					add 1 to {c}
+	broadcast "C: %{c}% in %difference between now and {_n}%"
 
 expression formatted %number%:
 	return type: string 
@@ -69,6 +112,8 @@ on join:
 		set {_latestVersion} to FetchVersion()
 		if {_latestVersion} != {DJUtils::Version}:
 			send "&cYour utility file &4%{DJUtils::FileName}%.sk &cis out of date! &cYou can use &4/DJUtils Update &cto update automatically!"
+			send "&cYour version: &4%{DJUtils::Version}%"
+			send "&cNewest version: &4%{_latestVersion}%"
 	
 function FetchVersion() :: string:
 	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
@@ -89,11 +134,11 @@ command /DJUtils [<text>] [<text>]:
 			send "&3/DJUtils Update"
 			send "&3/DJUtils Reload"
 			send "&4[&c------------------&4]"
-		if arg-1 = "Discord":
+		else if arg-1 = "Discord":
 			send "&4[&c------------------&4]"
 			send "&3Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
 			send "&4[&c------------------&4]"
-		if arg-1 = "Update":
+		else if arg-1 = "Update":
 			if FetchVersion() = {DJUtils::Version}:
 				send "&4[&c----------------------------------&4]"
 				send "&3You are already on the latest version."
