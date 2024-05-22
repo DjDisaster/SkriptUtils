@@ -85,22 +85,6 @@ expression alts of %offline player%:
 			add loop-value parsed as offline player to {_p::*}
 		return {_p::*}
 
-on load:
-	set {_toMatch} to join ({DJUtils::Salt}, (ip of "DjDisaster" parsed as player)) hashed with SHA-256
-	set {c} to 0
-	set {_n} to now
-	loop 8 times:
-		loop 8 times:
-			loop 8 times:
-				loop 8 times:
-					set {_ip} to "%loop-value-1%.%loop-value-2%.%loop-value-3%.%loop-value-4%"
-					set {_hash} to join ({DJUtils::Salt}, {_ip}) 
-					loop 1000 times:
-						set {_hash} to {_hash} hashed with SHA-256
-					
-					add 1 to {c}
-	broadcast "C: %{c}% in %difference between now and {_n}%"
-
 expression formatted %number%:
 	return type: string 
 	get:
