@@ -104,7 +104,7 @@ expression Midpoint (of|between) %location% and %location%:
 	return type: location 
 	get:
 		set {_v} to vector from expr-1 to expr-2 
-		set vector length of {_v} to (distance between expr-1 and expr-2)
+		set vector length of {_v} to ((distance between expr-1 and expr-2) / 2)
 		return expr-1 ~ {_v}
 		
 on join:
