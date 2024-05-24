@@ -1,5 +1,5 @@
-# Version: beta-1
-# Do not delete the version line.
+# Version: beta-2
+# Do not delete or modify the version line.
 
 # Skript utilities 
 # By DjDisaster 
@@ -20,6 +20,16 @@
 # Output: 5.12k
 # Example: formatted -1234
 # Output: -1.23k
+
+# Alts: alts of %offlineplayer%
+# Example: alts of ("DjDisaster" parsed as player)
+# Output: DjDisaster, any alts of DjDisaster 
+# Example: ban alts of ("DjDisaster" parsed as player)
+# Output: bans any alts from "DjDisaster" and them.
+
+# Midpoint (of|between) %location% and %location% 
+# Example: midpoint between location(1,1,1) and location(3,3,3)
+# Output: location(2,2,2)
 
 
 import:
@@ -90,6 +100,13 @@ expression formatted %number%:
 	get:
 		return Format(expr-1)
 
+expression Midpoint (of|between) %location% and %location%:
+	return type: location 
+	get:
+		set {_v} to vector from expr-1 to expr-2 
+		set vector length of {_v} to (distance between expr-1 and expr-2)
+		return expr-1 ~ {_v}
+		
 on join:
 	wait a second
 	if player is op:
