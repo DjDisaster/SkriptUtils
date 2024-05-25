@@ -156,36 +156,32 @@ command /DJUtils [<text>] [<text>]:
     permission: admin.perms
     trigger:
         if arg-1 = "Info":
-            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
-            send "<##A7C7E7>Version: %{DJUtils::Version}%"
-            send "<##A7C7E7>"
-            send "<##A7C7E7>/DJUtils Update"
-            send "<##A7C7E7>/DJUtils Reload"
-            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
+            send "<##c23b22>&lDJUtils"
+            send " &f- <##A7C7E7>Version: %{DJUtils::Version}%"
+            send "  &f⤻ <##A7C7E7>/DJUtils Update"
+            send "  &f⤻ <##A7C7E7>/DJUtils Reload"
         else if arg-1 = "Discord":
-            send "<##c23b22>[<##FF6961>-----------------------------------<##c23b22>]"
-            send "<##A7C7E7>Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
-            send "<##c23b22>[<##FF6961>-----------------------------------<##c23b22>]"
+            send "<##c23b22>&lDJUtils"
+            send " &f⤻ <##A7C7E7>Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
         else if arg-1 = "Update":
             if FetchVersion() = {DJUtils::Version}:
-                send "<##c23b22>[<##FF6961>----------------------------------<##c23b22>]"
-                send "<##A7C7E7>You are already on the latest version."
-                send "<##A7C7E7>New version? Try waiting 5 minutes"
-                send "<##c23b22>[<##FF6961>----------------------------------<##c23b22>]"
+                send "<##c23b22>&lDJUtils"
+                send " &f⤻ <##A7C7E7>You are already on the latest version."
+                send " &f⤻ <##A7C7E7>New version? Try waiting 5 minutes"
                 stop
             UpdateSkript()
-            send "&7Skript at &e&nplugins/Skript/scripts/%{DJUtils::FileName}%.sk&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
-            send "%nl%&7Would you like to reload the script? &e/DJUtils Reload"
+            send "<##c23b22>&lDJUtils"
+            send " &f⤻ &7Skript at &e&nplugins/Skript/scripts/%{DJUtils::FileName}%.sk&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
+            send " &f⤻ %nl%&7Would you like to reload the script? &e/DJUtils Reload"
         
         else if arg-1 = "Reload":
             set {_t} to now
             reload script {DJUtils::FileName}
             send "<##c23b22>%{DJUtils::FileName}%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
         else:
-            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
-            send "<##A7C7E7>Invalid command out of:"
-            send "<##A7C7E7>/DJUtils Info"
-            send "<##A7C7E7>/DJUtils Update"
-            send "<##A7C7E7>/DJUtils Reload"
-            send "<##A7C7E7>/DJUtils Discord"
-            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
+            send "<##c23b22>&lDJUtils"
+            send " &f- <##A7C7E7>Invalid command out of:"
+            send "  &f⤻ <##A7C7E7>/DJUtils Info"
+            send "  &f⤻ <##A7C7E7>/DJUtils Update"
+            send "  &f⤻ <##A7C7E7>/DJUtils Reload"
+            send "  &f⤻ <##A7C7E7>/DJUtils Discord"
