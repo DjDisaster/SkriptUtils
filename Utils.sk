@@ -174,7 +174,7 @@ command /DJUtils [<text>] [<text>]:
                 send "<##c23b22>[<##FF6961>----------------------------------<##c23b22>]"
                 stop
             UpdateSkript()
-            send "&7Skript in &e&n%{_f}%&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
+            send "&7Skript at &e&nplugins/Skript/scripts/%{DJUtils::FileName}%.sk&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
             send "%nl%&7Would you like to reload the script? &e/DJUtils Reload"
         
         else if arg-1 = "Reload":
