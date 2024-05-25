@@ -60,7 +60,6 @@ on load:
             set {_s} to join {_s}, (random element out of {_c::*}) 
         set {DJUtils::Salt} to {_s}
         
-        
 on join:
     set {_hash} to join ({DJUtils::Salt}, ip of player) 
     loop 1000 times:
@@ -69,7 +68,7 @@ on join:
         add player's uuid to {DJUtils::IpAddresses::%{_hash}%::*} 
     set {DJUtils::IpAddresses::%player's uuid%} to {_hash}
 
-function Format(n: num) :: string:
+local function Format(n: num) :: string:
     return "%{_n}%" if {_n} = (10.0 ^ 309.0) or (-10.0 ^ 309.0)
     return NegativeFormat({_n}) if {_n} < 0
     return "%{_n}%" if {_n} < 1
@@ -88,7 +87,6 @@ local function UpdateSkript():
     set {_inStream} to new URL({_link})
     set {_inStream} to {_inStream}.openStream()
     Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
-
 
 expression small [caps ]of %string%:
     return type: string
@@ -191,4 +189,3 @@ command /DJUtils [<text>] [<text>]:
             send "<##A7C7E7>/DJUtils Reload"
             send "<##A7C7E7>/DJUtils Discord"
             send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
-            
