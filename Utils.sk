@@ -31,6 +31,15 @@
 # Example: midpoint between location(1,1,1) and location(3,3,3)
 # Output: location(2,2,2)
 
+# formatted %timespan%
+# Example: formatted 1000 seconds 
+# Output: 16m 40s 
+# Example: formatted 10000 seconds 
+# Ouptut: 2h 46m 40s
+# Example: formatted 30 seconds 
+# Output: 30s
+
+
 import:
     java.io.File
     java.nio.file.Files
@@ -104,14 +113,18 @@ expression %string% in small[ caps]:
             replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
         return {_string}
         
-expression formatted %timespan% using %string%:
-    return type: string 
-    get:
-        set {_seconds} to seconds of {_timespan}
-        set {_s} to mod({_seconds}, 60)
-        set {_m} to mod(floor({_seconds} / 60), 60)
-        set {_h} to mod(floor({_seconds} / 3600), 3600)
-        return "%{_h}%h %{_m}%m %{_s}%s"
+expression formatted %timespan%:
+	return type: string 
+	get:
+		set {_seconds} to seconds of expr-1
+		set {_s} to mod({_seconds}, 60)
+		set {_m} to mod(floor({_seconds} / 60), 60)
+		set {_h} to mod(floor({_seconds} / 3600), 3600)
+		if {_h} = 0:
+			if {_m} = 0:
+				return "%{_s}%s"
+			return "%{_m}%m %{_s}%s"
+		return "%{_h}%h %{_m}%m %{_s}%s"
         
 expression alts of %offline player%:
     return type: offline players 
