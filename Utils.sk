@@ -1,4 +1,4 @@
-# Version: beta-3
+# Version: beta-4
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -31,159 +31,161 @@
 # Example: midpoint between location(1,1,1) and location(3,3,3)
 # Output: location(2,2,2)
 
-
 import:
-	java.io.File
-	java.nio.file.Files
-	java.nio.charset.StandardCharsets
-	java.net.URL
-	java.nio.file.StandardCopyOption
-	org.apache.commons.io.IOUtils
+    java.io.File
+    java.nio.file.Files
+    java.nio.charset.StandardCharsets
+    java.net.URL
+    java.nio.file.StandardCopyOption
+    org.apache.commons.io.IOUtils
 
 on load:
-	# Pre-loading to increase efficiency at cost of parse time.
-	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
-	set {DJUtils::SmallCaps::*} to "ᴀ|ʙ|ᴄ|ᴅ|ᴇ|ғ|ɢ|ʜ|ɪ|ᴊ|ᴋ|ʟ|ᴍ|ɴ|ᴏ|ᴘ|ǫ|ʀ|s|ᴛ|ᴜ|ᴠ|ᴡ|x|ʏ|ᴢ" split at "|"
-	set {DJUtils::NumberFormat::*} to (",k,m,b,t,qa,qn,sx,sp,oc,no,dc,ud,dd,td,qad,qnd,sxd,spd,ocd,nod,vg,unvg,dovg,trvg,quatvg,quinv,sexvg,septvg,octvg,novvg,trig,untrig,dotrig,tetrig,quatrig,quintrig,sextrig,septrig,octrig,novtrig,quadg,unquadg,doquadg,tequadg,quadorquadg,quinquadg,sexquadg,sepquadg,octoquadg,novquadg,quinquag,unquinquag,doquinquag,tequinquag,quadoquinquag,quinquinquag,sexquinquag,sepquinquag,octoquinquag,novquinquag,sexag,unsexag,dosexag,tesexag,quadsexag,quinsexag,sexsexag,sepsexag,octosexag,novsexag,septg,unseptg,doseptg,teseptg,quadoseptg,quinseptg,sexseptg,sepseptg,octoseptg,novseptg,octog,unoctog,dooctog,teoctog,quadoctog,quinoctog,sexoctog,sepoctog,octooctog,novoctog,nonag,unnonag,dononag,tenonag,quadononag,quinnonag,sexnonag,sepnonag,octononag,novnonag,centg,uncentg" split at ",")
-	set {DJUtils::FileName} to name of script
-	set {DJUtils::Version} to "1.0"
-	
-	# Takes 45.44 days to crack an IP with skript 
-	# Can be done a lot faster, but its probably 
-	# still nicer to include something (by faster 
-	# I mean itd probably take minutes per IP)
-	# Minehut will mask IPS anyway	
-	if {DJUtils::Salt} is not set:
-		set {_c::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9"
-		set {_s} to ""
-		loop 16 times:
-			set {_s} to join {_s}, (random element out of {_c::*}) 
-		set {DJUtils::Salt} to {_s}
-		
-		
+    # Pre-loading to increase efficiency at cost of parse time.
+    set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
+
+    set {DJUtils::SmallCaps::*} to "ᴀ|ʙ|ᴄ|ᴅ|ᴇ|ғ|ɢ|ʜ|ɪ|ᴊ|ᴋ|ʟ|ᴍ|ɴ|ᴏ|ᴘ|ǫ|ʀ|s|ᴛ|ᴜ|ᴠ|ᴡ|x|ʏ|ᴢ" split at "|"
+    set {DJUtils::NumberFormat::*} to (",k,m,b,t,qa,qn,sx,sp,oc,no,dc,ud,dd,td,qad,qnd,sxd,spd,ocd,nod,vg,unvg,dovg,trvg,quatvg,quinv,sexvg,septvg,octvg,novvg,trig,untrig,dotrig,tetrig,quatrig,quintrig,sextrig,septrig,octrig,novtrig,quadg,unquadg,doquadg,tequadg,quadorquadg,quinquadg,sexquadg,sepquadg,octoquadg,novquadg,quinquag,unquinquag,doquinquag,tequinquag,quadoquinquag,quinquinquag,sexquinquag,sepquinquag,octoquinquag,novquinquag,sexag,unsexag,dosexag,tesexag,quadsexag,quinsexag,sexsexag,sepsexag,octosexag,novsexag,septg,unseptg,doseptg,teseptg,quadoseptg,quinseptg,sexseptg,sepseptg,octoseptg,novseptg,octog,unoctog,dooctog,teoctog,quadoctog,quinoctog,sexoctog,sepoctog,octooctog,novoctog,nonag,unnonag,dononag,tenonag,quadononag,quinnonag,sexnonag,sepnonag,octononag,novnonag,centg,uncentg" split at ",")
+    set {DJUtils::FileName} to name of script
+    set {DJUtils::Version} to "beta-4"
+    
+    # Takes 45.44 days to crack an IP with skript 
+    # Can be done a lot faster, but its probably 
+    # still nicer to include something (by faster 
+    # I mean itd probably take minutes per IP)
+    # Minehut will mask IPS anyway	
+    if {DJUtils::Salt} is not set:
+        set {_c::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9"
+        set {_s} to ""
+        loop 16 times:
+            set {_s} to join {_s}, (random element out of {_c::*}) 
+        set {DJUtils::Salt} to {_s}
+        
 on join:
-	set {_hash} to join ({DJUtils::Salt}, ip of player) 
-	loop 1000 times:
-		set {_hash} to {_hash} hashed with SHA-256
-	if {DJUtils::IpAddresses::%{_hash}%::*} does not contain player's uuid:
-		add player's uuid to {DJUtils::IpAddresses::%{_hash}%::*} 
-	set {DJUtils::IpAddresses::%player's uuid%} to {_hash}
+    set {_hash} to join ({DJUtils::Salt}, ip of player) 
+    loop 1000 times:
+        set {_hash} to {_hash} hashed with SHA-256
+    if {DJUtils::IpAddresses::%{_hash}%::*} does not contain player's uuid:
+        add player's uuid to {DJUtils::IpAddresses::%{_hash}%::*} 
+    set {DJUtils::IpAddresses::%player's uuid%} to {_hash}
 
 local function Format(n: num) :: string:
-	return "%{_n}%" if {_n} = (10.0 ^ 309.0) or (-10.0 ^ 309.0)
-	return NegativeFormat({_n}) if {_n} < 0
-	return "%{_n}%" if {_n} < 1
-	set {_c} to (floor(log({_n}, 1000)))
-	return "%(({_n} / (1000.0^(({_c}) - 1))) / 1000)%%{DJUtils::NumberFormat::%({_c}+1)%}%"
-	
+    return "%{_n}%" if {_n} = (10.0 ^ 309.0) or (-10.0 ^ 309.0)
+    return NegativeFormat({_n}) if {_n} < 0
+    return "%{_n}%" if {_n} < 1
+    set {_c} to (floor(log({_n}, 1000)))
+    return "%(({_n} / (1000.0^(({_c}) - 1))) / 1000)%%{DJUtils::NumberFormat::%({_c}+1)%}%"
+    
 local function NegativeFormat(n: number) :: string:
-	set {_abs} to abs({_n})
-	return join "-", Format({_abs})
-	
+    set {_abs} to abs({_n})
+    return join "-", Format({_abs})
+    
+local function UpdateSkript():
+    set {_f} to "plugins/Skript/scripts/%{DJUtils::FileName}%.sk"
+    set {_file} to new File({_f})
+    
+    set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
+    set {_inStream} to new URL({_link})
+    set {_inStream} to {_inStream}.openStream()
+    Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
+
 expression small [caps ]of %string%:
-	return type: string
-	get:
-		set {_string} to expr-1
-		loop {DJUtils::Alphabet::*}:
-			replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
-		return {_string}
-		
+    return type: string
+    get:
+        set {_string} to expr-1
+        loop {DJUtils::Alphabet::*}:
+            replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
+        return {_string}
+        
 expression %string% in small[ caps]:
-	return type: string
-	get:
-		set {_string} to expr-1
-		loop {DJUtils::Alphabet::*}:
-			replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
-		return {_string}
-		
+    return type: string
+    get:
+        set {_string} to expr-1
+        loop {DJUtils::Alphabet::*}:
+            replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
+        return {_string}
+        
 expression formatted %timespan% using %string%:
-	return type: string 
-	get:
-		set {_seconds} to seconds of {_timespan}
-		set {_s} to mod({_seconds}, 60)
-		set {_m} to mod(floor({_seconds} / 60), 60)
-		set {_h} to mod(floor({_seconds} / 3600), 3600)
-		return "%{_h}%h %{_m}%m %{_s}%s"
-		
-		
+    return type: string 
+    get:
+        set {_seconds} to seconds of {_timespan}
+        set {_s} to mod({_seconds}, 60)
+        set {_m} to mod(floor({_seconds} / 60), 60)
+        set {_h} to mod(floor({_seconds} / 3600), 3600)
+        return "%{_h}%h %{_m}%m %{_s}%s"
+        
 expression alts of %offline player%:
-	return type: offline players 
-	get:
-		set {_hashedIP} to {DJUtils::IpAddresses::%expr-1's uuid%}
-		loop {DJUtils::IpAddresses::%{_hashedIP}%::*}:
-			add loop-value parsed as offline player to {_p::*}
-		return {_p::*}
+    return type: offline players 
+    get:
+        set {_hashedIP} to {DJUtils::IpAddresses::%expr-1's uuid%}
+        loop {DJUtils::IpAddresses::%{_hashedIP}%::*}:
+            add loop-value parsed as offline player to {_p::*}
+        return {_p::*}
 
 expression formatted %number%:
-	return type: string 
-	get:
-		return Format(expr-1)
+    return type: string 
+    get:
+        return Format(expr-1)
 
-expression Midpoint (of|between) %location% and %location%:
-	return type: location 
-	get:
-		set {_v} to vector from expr-1 to expr-2 
-		set vector length of {_v} to ((distance between expr-1 and expr-2) / 2)
-		return expr-1 ~ {_v}
-		
+expression midpoint (of|between) %location% and %location%:
+    return type: location 
+    get:
+        set {_v} to vector from expr-1 to expr-2 
+        set vector length of {_v} to ((distance between expr-1 and expr-2) / 2)
+        return expr-1 ~ {_v}
+        
 on join:
-	wait a second
-	if player is op:
-		set {_latestVersion} to FetchVersion()
-		if {_latestVersion} != {DJUtils::Version}:
-			send "&cYour utility file &4%{DJUtils::FileName}%.sk &cis out of date! &cYou can use &4/DJUtils Update &cto update automatically!"
-			send "&cYour version: &4%{DJUtils::Version}%"
-			send "&cNewest version: &4%{_latestVersion}%"
-	
+    wait a second
+    if player is op:
+        set {_latestVersion} to FetchVersion()
+        if {_latestVersion} != {DJUtils::Version}:
+            send "<##FF6961>Your utility file <##c23b22>%{DJUtils::FileName}%.sk <##FF6961>is out of date! <##FF6961>You can use <##c23b22>/DJUtils Update <##FF6961>to update automatically!"
+            send "<##FF6961>Your version: <##c23b22>%{DJUtils::Version}%"
+            send "<##FF6961>Newest version: <##c23b22>%{_latestVersion}%"
+    
 function FetchVersion() :: string:
-	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
-	set {_inStream} to new URL({_link})
-	set {_inStream} to {_inStream}.openStream()
-	set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
-	set {_result} to first element out of ({_result} split at nl)
-	set {_result} to 2nd element out of ({_result} split at "Version: ")
-	return {_result}
-	
+    set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
+    set {_inStream} to new URL({_link})
+    set {_inStream} to {_inStream}.openStream()
+    set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
+    set {_result} to first element out of ({_result} split at nl)
+    set {_result} to 2nd element out of ({_result} split at "Version: ")
+        
+    return {_result}
+    
 command /DJUtils [<text>] [<text>]:
-	permission: admin.perms
-	trigger:
-		if arg-1 = "Info":
-			send "&4[&c------------------&4]"
-			send "&3Version: %{DJUtils::Version}%"
-			send "&3"
-			send "&3/DJUtils Update"
-			send "&3/DJUtils Reload"
-			send "&4[&c------------------&4]"
-		else if arg-1 = "Discord":
-			send "&4[&c------------------&4]"
-			send "&3Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
-			send "&4[&c------------------&4]"
-		else if arg-1 = "Update":
-			if FetchVersion() = {DJUtils::Version}:
-				send "&4[&c----------------------------------&4]"
-				send "&3You are already on the latest version."
-				send "&3New version? Try waiting 5 minutes"
-				send "&4[&c----------------------------------&4]"
-				stop
-			set {_f} to "plugins/Skript/scripts/%{DJUtils::FileName}%.sk"
-			set {_file} to new File({_f})
-			
-			set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
-			set {_inStream} to new URL({_link})
-			set {_inStream} to {_inStream}.openStream()
-			Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
-			send "&7Skript in &e&n%{_f}%&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
-			send "%nl%&7Would you like to reload the script? &e/DJUtils Reload"
-		else if arg-1 = "Reload":
-			set {_t} to now
-			reload script {DJUtils::FileName}
-			send "&4%{DJUtils::FileName}%.sk &chas been reloaded in &4%difference between now and {_t}%"
-		else:
-			send "&4[&c------------------&4]"
-			send "&3Invalid command out of:"
-			send "&3/DJUtils Info"
-			send "&3/DJUtils Update"
-			send "&3/DJUtils Reload"
-			send "&3/DJUtils Discord"
-			send "&4[&c------------------&4]"
-			
+    permission: admin.perms
+    trigger:
+        if arg-1 = "Info":
+            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
+            send "<##A7C7E7>Version: %{DJUtils::Version}%"
+            send "<##A7C7E7>"
+            send "<##A7C7E7>/DJUtils Update"
+            send "<##A7C7E7>/DJUtils Reload"
+            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
+        else if arg-1 = "Discord":
+            send "<##c23b22>[<##FF6961>-----------------------------------<##c23b22>]"
+            send "<##A7C7E7>Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
+            send "<##c23b22>[<##FF6961>-----------------------------------<##c23b22>]"
+        else if arg-1 = "Update":
+            if FetchVersion() = {DJUtils::Version}:
+                send "<##c23b22>[<##FF6961>----------------------------------<##c23b22>]"
+                send "<##A7C7E7>You are already on the latest version."
+                send "<##A7C7E7>New version? Try waiting 5 minutes"
+                send "<##c23b22>[<##FF6961>----------------------------------<##c23b22>]"
+                stop
+            UpdateSkript()
+            send "&7Skript in &e&n%{_f}%&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
+            send "%nl%&7Would you like to reload the script? &e/DJUtils Reload"
+        
+        else if arg-1 = "Reload":
+            set {_t} to now
+            reload script {DJUtils::FileName}
+            send "<##c23b22>%{DJUtils::FileName}%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
+        else:
+            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
+            send "<##A7C7E7>Invalid command out of:"
+            send "<##A7C7E7>/DJUtils Info"
+            send "<##A7C7E7>/DJUtils Update"
+            send "<##A7C7E7>/DJUtils Reload"
+            send "<##A7C7E7>/DJUtils Discord"
+            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
