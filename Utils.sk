@@ -8,36 +8,8 @@
 # and effects.
 
 #
-# Usage:
+# Usage: https://github.com/DjDisaster/SkriptUtils/tree/main
 #
-
-# Small-Caps: small [caps] of %string% 
-# Example: small caps of "hello world"
-# Output: ʜᴇʟʟᴏ ᴡᴏʀʟᴅ
-
-# Number-Formatting: formatted %number%
-# Example: formatted 5123
-# Output: 5.12k
-# Example: formatted -1234
-# Output: -1.23k
-
-# Alts: alts of %offlineplayer%
-# Example: alts of ("DjDisaster" parsed as player)
-# Output: DjDisaster, any alts of DjDisaster 
-# Example: ban alts of ("DjDisaster" parsed as player)
-# Output: bans any alts from "DjDisaster" and them.
-
-# Midpoint (of|between) %location% and %location% 
-# Example: midpoint between location(1,1,1) and location(3,3,3)
-# Output: location(2,2,2)
-
-# formatted %timespan%
-# Example: formatted 1000 seconds 
-# Output: 16m 40s 
-# Example: formatted 10000 seconds 
-# Ouptut: 2h 46m 40s
-# Example: formatted 30 seconds 
-# Output: 30s
 
 import:
     java.io.File
