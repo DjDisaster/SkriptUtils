@@ -39,7 +39,6 @@
 # Example: formatted 30 seconds 
 # Output: 30s
 
-
 import:
     java.io.File
     java.nio.file.Files
@@ -49,13 +48,13 @@ import:
     org.apache.commons.io.IOUtils
 
 on load:
+    set {DJUtils::Version} to "beta-4.5"
     # Pre-loading to increase efficiency at cost of parse time.
     set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
     set {DJUtils::SmallCaps::*} to "ᴀ|ʙ|ᴄ|ᴅ|ᴇ|ғ|ɢ|ʜ|ɪ|ᴊ|ᴋ|ʟ|ᴍ|ɴ|ᴏ|ᴘ|ǫ|ʀ|s|ᴛ|ᴜ|ᴠ|ᴡ|x|ʏ|ᴢ" split at "|"
     set {DJUtils::NumberFormat::*} to (",k,m,b,t,qa,qn,sx,sp,oc,no,dc,ud,dd,td,qad,qnd,sxd,spd,ocd,nod,vg,unvg,dovg,trvg,quatvg,quinv,sexvg,septvg,octvg,novvg,trig,untrig,dotrig,tetrig,quatrig,quintrig,sextrig,septrig,octrig,novtrig,quadg,unquadg,doquadg,tequadg,quadorquadg,quinquadg,sexquadg,sepquadg,octoquadg,novquadg,quinquag,unquinquag,doquinquag,tequinquag,quadoquinquag,quinquinquag,sexquinquag,sepquinquag,octoquinquag,novquinquag,sexag,unsexag,dosexag,tesexag,quadsexag,quinsexag,sexsexag,sepsexag,octosexag,novsexag,septg,unseptg,doseptg,teseptg,quadoseptg,quinseptg,sexseptg,sepseptg,octoseptg,novseptg,octog,unoctog,dooctog,teoctog,quadoctog,quinoctog,sexoctog,sepoctog,octooctog,novoctog,nonag,unnonag,dononag,tenonag,quadononag,quinnonag,sexnonag,sepnonag,octononag,novnonag,centg,uncentg" split at ",")
     set {DJUtils::FileName} to name of script
-    set {DJUtils::Version} to "beta-4"
     
     # Takes 45.44 days to crack an IP with skript 
     # Can be done a lot faster, but its probably 
@@ -169,36 +168,32 @@ command /DJUtils [<text>] [<text>]:
     permission: admin.perms
     trigger:
         if arg-1 = "Info":
-            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
-            send "<##A7C7E7>Version: %{DJUtils::Version}%"
-            send "<##A7C7E7>"
-            send "<##A7C7E7>/DJUtils Update"
-            send "<##A7C7E7>/DJUtils Reload"
-            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
+            send "<##c23b22>&lDJUtils"
+            send " &f- <##A7C7E7>Version: %{DJUtils::Version}%"
+            send "  &f⤻ <##A7C7E7>/DJUtils Update"
+            send "  &f⤻ <##A7C7E7>/DJUtils Reload"
         else if arg-1 = "Discord":
-            send "<##c23b22>[<##FF6961>-----------------------------------<##c23b22>]"
-            send "<##A7C7E7>Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
-            send "<##c23b22>[<##FF6961>-----------------------------------<##c23b22>]"
+            send "<##c23b22>&lDJUtils"
+            send " &f⤻ <##A7C7E7>Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
         else if arg-1 = "Update":
             if FetchVersion() = {DJUtils::Version}:
-                send "<##c23b22>[<##FF6961>----------------------------------<##c23b22>]"
-                send "<##A7C7E7>You are already on the latest version."
-                send "<##A7C7E7>New version? Try waiting 5 minutes"
-                send "<##c23b22>[<##FF6961>----------------------------------<##c23b22>]"
+                send "<##c23b22>&lDJUtils"
+                send " &f⤻ <##A7C7E7>You are already on the latest version."
+                send " &f⤻ <##A7C7E7>New version? Try waiting 5 minutes"
                 stop
             UpdateSkript()
-            send "&7Skript in &e&n%{_f}%&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
-            send "%nl%&7Would you like to reload the script? &e/DJUtils Reload"
+            send "<##c23b22>&lDJUtils"
+            send " &f⤻ &7Skript at &e&nplugins/Skript/scripts/%{DJUtils::FileName}%.sk&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
+            send " &f⤻ %nl%&7Would you like to reload the script? &e/DJUtils Reload"
         
         else if arg-1 = "Reload":
             set {_t} to now
             reload script {DJUtils::FileName}
             send "<##c23b22>%{DJUtils::FileName}%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
         else:
-            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
-            send "<##A7C7E7>Invalid command out of:"
-            send "<##A7C7E7>/DJUtils Info"
-            send "<##A7C7E7>/DJUtils Update"
-            send "<##A7C7E7>/DJUtils Reload"
-            send "<##A7C7E7>/DJUtils Discord"
-            send "<##c23b22>[<##FF6961>------------------<##c23b22>]"
+            send "<##c23b22>&lDJUtils"
+            send " &f- <##A7C7E7>Invalid command out of:"
+            send "  &f⤻ <##A7C7E7>/DJUtils Info"
+            send "  &f⤻ <##A7C7E7>/DJUtils Update"
+            send "  &f⤻ <##A7C7E7>/DJUtils Reload"
+            send "  &f⤻ <##A7C7E7>/DJUtils Discord"
