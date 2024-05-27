@@ -173,8 +173,8 @@ command /DJUtils [<text>] [<text>]:
             send " "
             send "<##c23b22>&lDJUtils"
             send " &f- <##A7C7E7>Version: &f%{DJUtils::Version}%"
-            send "  &f⤻ <##A7C7E7>/DJUtils Update"
-            send "  &f⤻ <##A7C7E7>/DJUtils Reload"
+            send "  &f⤻ <##A7C7E7>/djUtils Update"
+            send "  &f⤻ <##A7C7E7>/djUtils Reload"
         else if arg-1 = "Discord":
             send " "
             send "<##c23b22>&lDJUtils"
@@ -190,7 +190,7 @@ command /DJUtils [<text>] [<text>]:
             send " "
             send "<##c23b22>&lDJUtils"
             send " &f⤻ &7Skript at &e&nplugins/Skript/scripts/%{DJUtils::FileName}%.sk&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
-            send "%nl% &f⤻ &7Would you like to reload the script? &e/DJUtils Reload"        
+            send "%nl% &f⤻ &7Would you like to reload the script? &e/djUtils Reload"        
         else if arg-1 = "Reload":
             set {_t} to now
             reload script {DJUtils::FileName}
@@ -199,7 +199,7 @@ command /DJUtils [<text>] [<text>]:
             send " "
             send "<##c23b22>&lDJUtils"
             send " &f- <##A7C7E7>Invalid command out of:"
-            send "  &f⤻ <##A7C7E7>/DJUtils Info"
-            send "  &f⤻ <##A7C7E7>/DJUtils Update"
-            send "  &f⤻ <##A7C7E7>/DJUtils Reload"
-            send "  &f⤻ <##A7C7E7>/DJUtils Discord"
+            send "  &f⤻ <##A7C7E7>/djUtils Info"
+            send "  &f⤻ <##A7C7E7>/djUtils Update"
+            send "  &f⤻ <##A7C7E7>/djUtils Reload"
+            send "  &f⤻ <##A7C7E7>/djUtils Discord"
