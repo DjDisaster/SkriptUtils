@@ -122,7 +122,7 @@ on join:
     if player is op:
         set {_latestVersion} to FetchVersion()
         if {_latestVersion} != {DJUtils::Version}:
-            send " "
+            
             send "<##c23b22>&lDJUtils"
             send " &f- <##FF6961>Your utility file <##c23b22>%{DJUtils::FileName}%.sk <##FF6961>is out of date! <##FF6961>You can use <##c23b22>/DJUtils Update <##FF6961>to update automatically!"
             send "  &f⤻ <##FF6961>Your version: <##c23b22>%{DJUtils::Version}%"
@@ -142,24 +142,20 @@ command /DJUtils [<text>] [<text>]:
     permission: admin.perms
     trigger:
         if arg-1 = "Info":
-            send " "
             send "<##c23b22>&lDJUtils"
             send " &f- <##A7C7E7>Version: &f%{DJUtils::Version}%"
             send "  &f⤻ <##A7C7E7>/djUtils Update"
             send "  &f⤻ <##A7C7E7>/djUtils Reload"
         else if arg-1 = "Discord":
-            send " "
             send "<##c23b22>&lDJUtils"
             send " &f⤻ <##A7C7E7>Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
         else if arg-1 = "Update":
             if FetchVersion() = {DJUtils::Version}:
-                send " "
                 send "<##c23b22>&lDJUtils"
                 send " &f⤻ <##A7C7E7>You are already on the latest version."
                 send " &f⤻ <##A7C7E7>New version? Try waiting 5 minutes"
                 stop
             UpdateSkript()
-            send " "
             send "<##c23b22>&lDJUtils"
             send " &f⤻ &7Skript at &e&nplugins/Skript/scripts/%{DJUtils::FileName}%.sk&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
             send "%nl% &f⤻ &7Would you like to reload the script? &e/djUtils Reload"        
@@ -168,7 +164,6 @@ command /DJUtils [<text>] [<text>]:
             reload script {DJUtils::FileName}
             send "<##c23b22>%{DJUtils::FileName}%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
         else:
-            send " "
             send "<##c23b22>&lDJUtils"
             send " &f- <##A7C7E7>Invalid command out of:"
             send "  &f⤻ <##A7C7E7>/djUtils Info"
