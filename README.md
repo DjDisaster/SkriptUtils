@@ -8,7 +8,7 @@ You are welcome to removing the updating features by changing where they link to
 - By providing a set of expressions 
 - and effects.
 
-## Usage
+# Syntax
 #### Small Caps
 - Small-Caps: `small [caps] of %string%`
 - Example: `small caps of "hello world"`
