@@ -1,4 +1,4 @@
-# Version: beta-6
+# Version: beta-7
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -8,36 +8,8 @@
 # and effects.
 
 #
-# Usage:
+# Usage: https://github.com/DjDisaster/SkriptUtils/tree/main
 #
-
-# Small-Caps: small [caps] of %string% 
-# Example: small caps of "hello world"
-# Output: ʜᴇʟʟᴏ ᴡᴏʀʟᴅ
-
-# Number-Formatting: formatted %number%
-# Example: formatted 5123
-# Output: 5.12k
-# Example: formatted -1234
-# Output: -1.23k
-
-# Alts: alts of %offlineplayer%
-# Example: alts of ("DjDisaster" parsed as player)
-# Output: DjDisaster, any alts of DjDisaster 
-# Example: ban alts of ("DjDisaster" parsed as player)
-# Output: bans any alts from "DjDisaster" and them.
-
-# Midpoint (of|between) %location% and %location% 
-# Example: midpoint between location(1,1,1) and location(3,3,3)
-# Output: location(2,2,2)
-
-# formatted %timespan%
-# Example: formatted 1000 seconds 
-# Output: 16m 40s 
-# Example: formatted 10000 seconds 
-# Ouptut: 2h 46m 40s
-# Example: formatted 30 seconds 
-# Output: 30s
 
 import:
     java.io.File
@@ -48,7 +20,7 @@ import:
     org.apache.commons.io.IOUtils
 
 on load:
-    set {DJUtils::Version} to "beta-6"
+    set {DJUtils::Version} to "beta-7"
     # Pre-loading to increase efficiency at cost of parse time.
     set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -150,9 +122,10 @@ on join:
     if player is op:
         set {_latestVersion} to FetchVersion()
         if {_latestVersion} != {DJUtils::Version}:
-            send "<##FF6961>Your utility file <##c23b22>%{DJUtils::FileName}%.sk <##FF6961>is out of date! <##FF6961>You can use <##c23b22>/DJUtils Update <##FF6961>to update automatically!"
-            send "<##FF6961>Your version: <##c23b22>%{DJUtils::Version}%"
-            send "<##FF6961>Newest version: <##c23b22>%{_latestVersion}%"
+            send "<##c23b22>&lDJUtils"
+            send " &f- <##FF6961>Your utility file <##c23b22>%{DJUtils::FileName}%.sk <##FF6961>is out of date! <##FF6961>You can use <##c23b22>/DJUtils Update <##FF6961>to update automatically!"
+            send "  &f⤻ <##FF6961>Your version: <##c23b22>%{DJUtils::Version}%"
+            send "  &f⤻ <##FF6961>Newest version: <##c23b22>%{_latestVersion}%"
     
 function FetchVersion() :: string:
     set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
@@ -169,9 +142,9 @@ command /DJUtils [<text>] [<text>]:
     trigger:
         if arg-1 = "Info":
             send "<##c23b22>&lDJUtils"
-            send " &f- <##A7C7E7>Version: %{DJUtils::Version}%"
-            send "  &f⤻ <##A7C7E7>/DJUtils Update"
-            send "  &f⤻ <##A7C7E7>/DJUtils Reload"
+            send " &f- <##A7C7E7>Version: &f%{DJUtils::Version}%"
+            send "  &f⤻ <##A7C7E7>/djUtils Update"
+            send "  &f⤻ <##A7C7E7>/djUtils Reload"
         else if arg-1 = "Discord":
             send "<##c23b22>&lDJUtils"
             send " &f⤻ <##A7C7E7>Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
@@ -184,8 +157,7 @@ command /DJUtils [<text>] [<text>]:
             UpdateSkript()
             send "<##c23b22>&lDJUtils"
             send " &f⤻ &7Skript at &e&nplugins/Skript/scripts/%{DJUtils::FileName}%.sk&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
-            send " &f⤻ %nl%&7Would you like to reload the script? &e/DJUtils Reload"
-        
+            send "%nl% &f⤻ &7Would you like to reload the script? &e/djUtils Reload"        
         else if arg-1 = "Reload":
             set {_t} to now
             reload script {DJUtils::FileName}
@@ -193,7 +165,7 @@ command /DJUtils [<text>] [<text>]:
         else:
             send "<##c23b22>&lDJUtils"
             send " &f- <##A7C7E7>Invalid command out of:"
-            send "  &f⤻ <##A7C7E7>/DJUtils Info"
-            send "  &f⤻ <##A7C7E7>/DJUtils Update"
-            send "  &f⤻ <##A7C7E7>/DJUtils Reload"
-            send "  &f⤻ <##A7C7E7>/DJUtils Discord"
+            send "  &f⤻ <##A7C7E7>/djUtils Info"
+            send "  &f⤻ <##A7C7E7>/djUtils Update"
+            send "  &f⤻ <##A7C7E7>/djUtils Reload"
+            send "  &f⤻ <##A7C7E7>/djUtils Discord"
