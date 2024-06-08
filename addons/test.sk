@@ -21,7 +21,7 @@ on join:
         set {_latestVersion} to FetchVersion()
         if {_latestVersion} != {DJUtils::Version}:
             send "<##c23b22>&lDJUtils"
-            send " &f- <##FF6961>Your utility file <##c23b22>%{DJUtils::FileName}%.sk <##FF6961>is out of date! <##FF6961>You can use <##c23b22>/DJUtils Update {@AddonName} <##FF6961>to update automatically!"
+            send " &f- <##FF6961>Your utility file <##c23b22>%{DJUtils::Addons::{@AddonName}::FileName}%.sk <##FF6961>is out of date! <##FF6961>You can use <##c23b22>/DJUtils Update {@AddonName} <##FF6961>to update automatically!"
             send "  &f⤻ <##FF6961>Your version: <##c23b22>%{DJUtils::Addons::{@AddonName}::Version}%"
             send "  &f⤻ <##FF6961>Newest version: <##c23b22>%{_latestVersion}%"
 			
