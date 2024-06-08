@@ -1,10 +1,14 @@
+# Usage
+You are welcome to use this code and modify it as long as you don't change any of the links such as the update fetching link.
+You are welcome to removing the updating features by changing where they link to is not allowed. 
+
 ### Skript utilities 
 - By DjDisaster, ThatOneDevil 
 - Designs to make skripting easier 
 - By providing a set of expressions 
 - and effects.
 
-## Usage
+# Syntax
 #### Small Caps
 - Small-Caps: `small [caps] of %string%`
 - Example: `small caps of "hello world"`
