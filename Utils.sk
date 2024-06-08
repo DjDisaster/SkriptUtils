@@ -85,17 +85,17 @@ expression %string% in small[ caps]:
         return {_string}
         
 expression formatted %timespan%:
-	return type: string 
-	get:
-		set {_seconds} to (expr-1.getTicks() / 20)
-		set {_s} to mod({_seconds}, 60)
-		set {_m} to mod(floor({_seconds} / 60), 60)
-		set {_h} to mod(floor({_seconds} / 3600), 3600)
-		if {_h} = 0:
-			if {_m} = 0:
-				return "%{_s}%s"
-			return "%{_m}%m %{_s}%s"
-		return "%{_h}%h %{_m}%m %{_s}%s"
+    return type: string 
+    get:
+        set {_seconds} to (expr-1.getTicks() / 20)
+        set {_s} to mod({_seconds}, 60)
+        set {_m} to mod(floor({_seconds} / 60), 60)
+        set {_h} to mod(floor({_seconds} / 3600), 3600)
+        if {_h} = 0:
+            if {_m} = 0:
+                return "%{_s}%s"
+            return "%{_m}%m %{_s}%s"
+        return "%{_h}%h %{_m}%m %{_s}%s"
         
 expression alts of %offline player%:
     return type: offline players 
