@@ -6,11 +6,10 @@
 # https://github.com/DjDisaster/SkriptUtils/blob/main/README.md
 
 # Make sure to have downloaded the main file from <https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>
-# This file is an extention.
 
 options:
 	AddonName: Test
 	
 on load:
-    set {DJUtils::Addons::{@AddonName}::Version} to "beta-1"
+	set {DJUtils::Addons::{@AddonName}::Version} to "beta-1"
 	set {DJUtils::Addons::{@AddonName}::FileName} to name of script
