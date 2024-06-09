@@ -14,23 +14,3 @@ options:
 on load:
     set {DJUtils::Addons::{@AddonName}::Version} to "beta-1"
 	set {DJUtils::Addons::{@AddonName}::FileName} to name of script
-	
-on join:
-    wait a second
-    if player is op:
-        set {_latestVersion} to FetchVersion()
-        if {_latestVersion} != {DJUtils::Version}:
-            send "<##c23b22>&lDJUtils"
-            send " &f- <##FF6961>Your utility file <##c23b22>%{DJUtils::Addons::{@AddonName}::FileName}%.sk <##FF6961>is out of date! <##FF6961>You can use <##c23b22>/DJUtils Update {@AddonName} <##FF6961>to update automatically!"
-            send "  &f⤻ <##FF6961>Your version: <##c23b22>%{DJUtils::Addons::{@AddonName}::Version}%"
-            send "  &f⤻ <##FF6961>Newest version: <##c23b22>%{_latestVersion}%"
-			
-local function FetchVersion() :: string:
-    set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/addons/test.sk"
-    set {_inStream} to new URL({_link})
-    set {_inStream} to {_inStream}.openStream()
-    set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
-    set {_result} to first element out of ({_result} split at nl)
-    set {_result} to 2nd element out of ({_result} split at "Version: ")
-        
-    return {_result}
