@@ -6,11 +6,12 @@
 ---
 
 ## Usage
-You are welcome to use and modify this code as long as you do not change any of the provided links, such as the update fetching link. You may remove the updating features, but altering the links is not permitted.
+- You are welcome to use and modify this code as long as you do not change any of the provided links, such as the update fetching link.
+- You may remove the updating features, but altering the links is not permitted.
 
 ## Requirements
-To use this you will need Skript and Skript-Reflect
-Addons may require different addons which will be shown in the comments of the file.
+- To use this you will need Skript and Skript-Reflect.
+- Addons may require different addons which will be shown in the comments of the file.
 
 ---
 
