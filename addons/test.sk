@@ -5,11 +5,13 @@
 # By using this program you agree to the usage:
 # https://github.com/DjDisaster/SkriptUtils/blob/main/USAGE.md
 
-# Make sure to have downloaded the main file from <https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>
+# Make sure you have downloaded the main file from https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk
+# Please make sure any errors or issues are submitted to our discord at https://discord.gg/wJhaVXNmFe
 
+# Do not delete or modify.
 options:
 	AddonName: Test
-	
+
 on load:
 	set {DJUtils::Addons::{@AddonName}::Version} to "beta-1"
 	set {DJUtils::Addons::{@AddonName}::FileName} to name of script
