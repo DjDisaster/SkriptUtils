@@ -1,6 +1,6 @@
 # Skript Utilities
 
-**Authors:** DjDisaster, ThatOneDevil  
+**Authors:** DjDisaster, ThatOneDevil, Tarna  
 **Description:** A collection of Skript utilities designed to make scripting easier by providing a set of expressions and effects.
 
 ---
