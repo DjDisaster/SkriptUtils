@@ -1,0 +1,1 @@
+You are welcome to use and modify this code as long as you do not change any of the provided links, such as the update fetching link. You may remove the updating features, but altering the links is not permitted.
