@@ -223,6 +223,7 @@ command /DJUtils [<text>] [<text>] [<text>]:
 		else if arg-1 = "Addon":
 			if arg-2 is "Install":
 				DownloadAddon(arg-3)
+				send "<##c23b22>%arg-3%.sk <##FF6961>has been downloaded."
 			else if arg-2 is "Update":
 				set {_latestVersion} to FetchAddonVersion(arg-3)
 				if {_latestVersion} = {DJUtils::Addons::%arg-3%::Version}:
@@ -239,9 +240,9 @@ command /DJUtils [<text>] [<text>] [<text>]:
 				reload script "djutils-addons/%arg-3%.sk"
 				send "<##c23b22>Addon %arg-3%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
 			else if arg-2 is "List":
-				set {_files::*} to new File({DJUtils::AddonsFolder}).listFiles()
+				set {_files::*} to ...(new File({DJUtils::AddonsFolder}).listFiles())
 				send "<##c23b22>&lDJUtils"
-				send " &f- <##A7C7E7>Available addons:"
+				send " &f- <##A7C7E7>Downloaded addons:"
 				loop {_files::*}:
 					send "  &f⤻ <##A7C7E7>%loop-value%"
 			else:
@@ -250,14 +251,6 @@ command /DJUtils [<text>] [<text>] [<text>]:
 				send "  &f⤻ <##A7C7E7>/djUtils Addon Install <addon>"
 				send "  &f⤻ <##A7C7E7>/djUtils Addon Update <addon>"
 				send "  &f⤻ <##A7C7E7>/djUtils Addon Reload <addon>"
-		else:
-			send "<##c23b22>&lDJUtils"
-			send " &f- <##A7C7E7>Invalid command out of:"
-			send "  &f⤻ <##A7C7E7>/djUtils Info"
-			send "  &f⤻ <##A7C7E7>/djUtils Update"
-			send "  &f⤻ <##A7C7E7>/djUtils Reload"
-			send "  &f⤻ <##A7C7E7>/djUtils Discord"
-			send "  &f⤻ <##A7C7E7>/djUtils Addon"
 		else:
 			send "<##c23b22>&lDJUtils"
 			send " &f- <##A7C7E7>Invalid command out of:"
