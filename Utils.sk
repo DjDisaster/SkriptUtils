@@ -30,6 +30,24 @@ on load:
 	set {DJUtils::FileName} to name of script
 
 	delete {DJUtils::Addons::*} 
+
+	set {DJUtils::AddonsFolder} to "plugins/Skript/scripts/djutils-addons"
+	set {_f} to new File({DJUtils::AddonsFolder})
+	if {_f}.exists() = false:
+		{_f}.mkdirs()
+	
+	# Takes 45.44 days to crack an IP with skript 
+	# Can be done a lot faster, but its probably 
+	# still nicer to include something (by faster 
+	# I mean itd probably take minutes per IP)
+	# Minehut will mask IPS anyway	
+	if {DJUtils::Salt} is not set:
+		set {_c::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9"
+		set {_s} to ""
+		loop 16 times:
+			set {_s} to join {_s}, (random element out of {_c::*}) 
+		set {DJUtils::Salt} to {_s}
+		
 	
 	# Takes 45.44 days to crack an IP with skript 
 	# Can be done a lot faster, but its probably 
@@ -226,6 +244,20 @@ command /DJUtils [<text>] [<text>] [<text>]:
 				send " &f- <##A7C7E7>Available addons:"
 				loop {_files::*}:
 					send "  &f⤻ <##A7C7E7>%loop-value%"
+			else:
+				send "<##c23b22>&lDJUtils"
+				send " &f- <##A7C7E7>Invalid command out of:"
+				send "  &f⤻ <##A7C7E7>/djUtils Addon Install <addon>"
+				send "  &f⤻ <##A7C7E7>/djUtils Addon Update <addon>"
+				send "  &f⤻ <##A7C7E7>/djUtils Addon Reload <addon>"
+		else:
+			send "<##c23b22>&lDJUtils"
+			send " &f- <##A7C7E7>Invalid command out of:"
+			send "  &f⤻ <##A7C7E7>/djUtils Info"
+			send "  &f⤻ <##A7C7E7>/djUtils Update"
+			send "  &f⤻ <##A7C7E7>/djUtils Reload"
+			send "  &f⤻ <##A7C7E7>/djUtils Discord"
+			send "  &f⤻ <##A7C7E7>/djUtils Addon"
 			else:
 				send "<##c23b22>&lDJUtils"
 				send " &f- <##A7C7E7>Invalid command out of:"
