@@ -1,0 +1,123 @@
+# Version: beta-1
+# Do not delete or modify the version line.
+
+# This is an extention for DJUtils.
+# By using this program you agree to the usage:
+# https://github.com/DjDisaster/SkriptUtils/blob/main/USAGE.md
+
+# Make sure you have downloaded the main file from https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk
+# Please make sure any errors or issues are submitted to our discord at https://discord.gg/wJhaVXNmFe
+
+
+
+import:
+	com.btk5h.skriptmirror.LibraryLoader
+	com.btk5h.skriptmirror.SkriptMirror 
+	net.dv8tion.jda.api.JDABuilder
+	java.io.File
+	java.nio.file.Files
+	java.nio.charset.StandardCharsets
+	java.net.URL
+	java.nio.file.StandardCopyOption
+	org.apache.commons.io.IOUtils
+	
+	net.dv8tion.jda.api.entities.Activity
+	net.dv8tion.jda.api.hooks.EventListener
+	net.dv8tion.jda.api.events.message.MessageReceivedEvent
+	net.dv8tion.jda.api.requests.GatewayIntent
+	
+on load:
+	set {_isSetup} to true if (the class "net.dv8tion.jda.api.JDABuilder") is set else false
+	if {_isSetup} = false:
+		if {Temp::IsInstalling::%name of script%} is set:
+			send "&4[DJUtils] &cWe are reloading the Libraries path to add required dependencies." to console
+			send "&4[DJUtils] &cThis removes the need for a server restart." to console
+			send "&4[DJUtils] &cThis msessage may repeat itself a few times."
+			set {_path} to SkriptMirror.getInstance().getDataFolder().toPath()
+			LibraryLoader.loadLibraries({_path})
+			wait 5 ticks 
+			reload script name of script
+			wait 60 seconds
+			delete {Temp::IsInstalling::%name of script%}
+			stop 
+			
+			
+		download_dependencies()
+		set {Temp::IsInstalling::%name of script%} to true
+		wait 5 ticks 
+		send "&4[JavaSkript] &cYou have installed a dependency. The reload may of had errors in it, required dependencies are currently being installed, this is due to skript limitations." to (all players where [input is op], console)
+		reload script name of script
+	else:
+		if {Temp::IsInstalling::%name of script%} is set:
+			delete {Temp::IsInstalling::%name of script%}
+			send "&4[JavaSkript] &aFile %name of script%.sk has been reloaded as dependencies should now be installed." to (all players where [input is op], console)
+		set {Temp::%name of script%::IsSetup} to true
+		
+		
+effect login to bot named %string% with token %string%:
+	parse:
+		continue
+	trigger:
+		if {DiscordBots::%expr-1%} is set:
+			{DiscordBots::%expr-1%}.shutdown()
+			
+		set {DiscordBots::%expr-1%} to JDABuilder.createDefault(expr-2)
+		set {_value} to expr-1
+		create new section and store it in {_load}:
+			{DiscordBots::%{_value}%}.setBulkDeleteSplittingEnabled(false)
+			{DiscordBots::%{_value}%}.enableIntents(GatewayIntent.GUILD_MEMBERS)
+			{DiscordBots::%{_value}%}.enableIntents(GatewayIntent.MESSAGE_CONTENT)
+			broadcast "%{DiscordBots::%{_value}%}%"
+			set {DiscordBots::%{_value}%} to {DiscordBots::%{_value}%}.build()
+			broadcast "%{DiscordBots::%{_value}%}%"
+			
+		broadcast "CLASS: %class of {_load}%"
+		run section {_load} async
+		
+effect add text listener %section% to %string%:
+	parse:
+		continue 
+	trigger:
+		if {DiscordBots::%expr-2%} is not set:
+			stop 
+			
+		set {_sec} to expr-1
+		create section with {_listener}, {_event} stored in {_functions::onEvent}:
+			if {_event} is instance of MessageReceivedEvent:
+				run section {_sec} with {_event}
+				
+		set {_listener} to new proxy instance of EventListener using {_functions::*}
+		{DiscordBots::%expr-2%}.addEventListener({_listener})
+		
+effect set activity of %string% to (1:watching|2:listening|3:streaming|4:competing) [in] %string%:
+	parse:
+		continue 
+	trigger:	
+		if {DiscordBots::%expr-1%} is not set:
+			stop 
+		if parser mark = 1:
+			{DiscordBots::%expr-1%}.getPresence().setActivity(Activity.watching(expr-2))
+		if parser mark = 2:
+			{DiscordBots::%expr-1%}.getPresence().setActivity(Activity.listening(expr-2))
+		if parser mark = 3:
+			{DiscordBots::%expr-1%}.getPresence().setActivity(Activity.streaming(expr-2))
+		if parser mark = 4:
+			{DiscordBots::%expr-1%}.getPresence().setActivity(Activity.competing(expr-2))
+		
+
+			
+		
+on unload:
+	if {Temp::%name of script%::IsSetup} = true:
+		loop {DiscordBots::*}:
+			loop-value.shutdown()
+
+			
+local function download_dependencies():
+	set {_f} to "plugins/skript-reflect/JDA.jar"
+	set {_file} to new File({_f})
+	
+	set {_link} to "https://github.com/discord-jda/JDA/releases/download/v5.0.0-beta.24/JDA-5.0.0-beta.24-withDependencies-min.jar"
+	set {_inStream} to new URL({_link})
+	set {_inStream} to {_inStream}.openStream()
+	Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
