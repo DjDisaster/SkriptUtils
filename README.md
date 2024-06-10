@@ -14,7 +14,7 @@
 - Addons may require different addons which will be shown in the comments of the file.
 
 ## Support
-- You can receive support for this utility core on the discord server: https://discord.gg/xsFsuXFH2E
+- You can receive support for this utility core on the [discord server]([http://someurl](https://discord.gg/xsFsuXFH2E))
 
 ---
 
