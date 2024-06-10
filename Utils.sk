@@ -1,4 +1,4 @@
-# Version: beta-7
+# Version: beta-8
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -265,3 +265,4 @@ command /DJUtils [<text>] [<text>] [<text>]:
 			send "  &f⤻ <##A7C7E7>/djUtils Update"
 			send "  &f⤻ <##A7C7E7>/djUtils Reload"
 			send "  &f⤻ <##A7C7E7>/djUtils Discord"
+			send "  &f⤻ <##A7C7E7>/djUtils Addon"
