@@ -13,21 +13,21 @@
 #
 
 import:
-    java.io.File
-    java.nio.file.Files
-    java.nio.charset.StandardCharsets
-    java.net.URL
-    java.nio.file.StandardCopyOption
-    org.apache.commons.io.IOUtils
+	java.io.File
+	java.nio.file.Files
+	java.nio.charset.StandardCharsets
+	java.net.URL
+	java.nio.file.StandardCopyOption
+	org.apache.commons.io.IOUtils
 
 on load:
-    set {DJUtils::Version} to "beta-7"
-    # Pre-loading to increase efficiency at cost of parse time.
-    set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
+	set {DJUtils::Version} to "beta-7"
+	# Pre-loading to increase efficiency at cost of parse time.
+	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
-    set {DJUtils::SmallCaps::*} to "ᴀ|ʙ|ᴄ|ᴅ|ᴇ|ғ|ɢ|ʜ|ɪ|ᴊ|ᴋ|ʟ|ᴍ|ɴ|ᴏ|ᴘ|ǫ|ʀ|s|ᴛ|ᴜ|ᴠ|ᴡ|x|ʏ|ᴢ" split at "|"
-    set {DJUtils::NumberFormat::*} to (",k,m,b,t,qa,qn,sx,sp,oc,no,dc,ud,dd,td,qad,qnd,sxd,spd,ocd,nod,vg,unvg,dovg,trvg,quatvg,quinv,sexvg,septvg,octvg,novvg,trig,untrig,dotrig,tetrig,quatrig,quintrig,sextrig,septrig,octrig,novtrig,quadg,unquadg,doquadg,tequadg,quadorquadg,quinquadg,sexquadg,sepquadg,octoquadg,novquadg,quinquag,unquinquag,doquinquag,tequinquag,quadoquinquag,quinquinquag,sexquinquag,sepquinquag,octoquinquag,novquinquag,sexag,unsexag,dosexag,tesexag,quadsexag,quinsexag,sexsexag,sepsexag,octosexag,novsexag,septg,unseptg,doseptg,teseptg,quadoseptg,quinseptg,sexseptg,sepseptg,octoseptg,novseptg,octog,unoctog,dooctog,teoctog,quadoctog,quinoctog,sexoctog,sepoctog,octooctog,novoctog,nonag,unnonag,dononag,tenonag,quadononag,quinnonag,sexnonag,sepnonag,octononag,novnonag,centg,uncentg" split at ",")
-    set {DJUtils::FileName} to name of script
+	set {DJUtils::SmallCaps::*} to "ᴀ|ʙ|ᴄ|ᴅ|ᴇ|ғ|ɢ|ʜ|ɪ|ᴊ|ᴋ|ʟ|ᴍ|ɴ|ᴏ|ᴘ|ǫ|ʀ|s|ᴛ|ᴜ|ᴠ|ᴡ|x|ʏ|ᴢ" split at "|"
+	set {DJUtils::NumberFormat::*} to (",k,m,b,t,qa,qn,sx,sp,oc,no,dc,ud,dd,td,qad,qnd,sxd,spd,ocd,nod,vg,unvg,dovg,trvg,quatvg,quinv,sexvg,septvg,octvg,novvg,trig,untrig,dotrig,tetrig,quatrig,quintrig,sextrig,septrig,octrig,novtrig,quadg,unquadg,doquadg,tequadg,quadorquadg,quinquadg,sexquadg,sepquadg,octoquadg,novquadg,quinquag,unquinquag,doquinquag,tequinquag,quadoquinquag,quinquinquag,sexquinquag,sepquinquag,octoquinquag,novquinquag,sexag,unsexag,dosexag,tesexag,quadsexag,quinsexag,sexsexag,sepsexag,octosexag,novsexag,septg,unseptg,doseptg,teseptg,quadoseptg,quinseptg,sexseptg,sepseptg,octoseptg,novseptg,octog,unoctog,dooctog,teoctog,quadoctog,quinoctog,sexoctog,sepoctog,octooctog,novoctog,nonag,unnonag,dononag,tenonag,quadononag,quinnonag,sexnonag,sepnonag,octononag,novnonag,centg,uncentg" split at ",")
+	set {DJUtils::FileName} to name of script
 
 	delete {DJUtils::Addons::*} 
 
@@ -35,213 +35,239 @@ on load:
 	set {_f} to new File({DJUtils::AddonsFolder})
 	if {_f}.exists() = false:
 		{_f}.mkdirs()
-    
-    # Takes 45.44 days to crack an IP with skript 
-    # Can be done a lot faster, but its probably 
-    # still nicer to include something (by faster 
-    # I mean itd probably take minutes per IP)
-    # Minehut will mask IPS anyway	
-    if {DJUtils::Salt} is not set:
-        set {_c::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9"
-        set {_s} to ""
-        loop 16 times:
-            set {_s} to join {_s}, (random element out of {_c::*}) 
-        set {DJUtils::Salt} to {_s}
-        
+	
+	# Takes 45.44 days to crack an IP with skript 
+	# Can be done a lot faster, but its probably 
+	# still nicer to include something (by faster 
+	# I mean itd probably take minutes per IP)
+	# Minehut will mask IPS anyway	
+	if {DJUtils::Salt} is not set:
+		set {_c::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9"
+		set {_s} to ""
+		loop 16 times:
+			set {_s} to join {_s}, (random element out of {_c::*}) 
+		set {DJUtils::Salt} to {_s}
+		
+	
+	# Takes 45.44 days to crack an IP with skript 
+	# Can be done a lot faster, but its probably 
+	# still nicer to include something (by faster 
+	# I mean itd probably take minutes per IP)
+	# Minehut will mask IPS anyway	
+	if {DJUtils::Salt} is not set:
+		set {_c::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9"
+		set {_s} to ""
+		loop 16 times:
+			set {_s} to join {_s}, (random element out of {_c::*}) 
+		set {DJUtils::Salt} to {_s}
+		
 on join:
-    set {_hash} to join ({DJUtils::Salt}, ip of player) 
-    loop 1000 times:
-        set {_hash} to {_hash} hashed with SHA-256
-    if {DJUtils::IpAddresses::%{_hash}%::*} does not contain player's uuid:
-        add player's uuid to {DJUtils::IpAddresses::%{_hash}%::*} 
-    set {DJUtils::IpAddresses::%player's uuid%} to {_hash}
+	set {_hash} to join ({DJUtils::Salt}, ip of player) 
+	loop 1000 times:
+		set {_hash} to {_hash} hashed with SHA-256
+	if {DJUtils::IpAddresses::%{_hash}%::*} does not contain player's uuid:
+		add player's uuid to {DJUtils::IpAddresses::%{_hash}%::*} 
+	set {DJUtils::IpAddresses::%player's uuid%} to {_hash}
 
 local function Format(n: num) :: string:
-    return "%{_n}%" if {_n} = (10.0 ^ 309.0) or (-10.0 ^ 309.0)
-    return NegativeFormat({_n}) if {_n} < 0
-    return "%{_n}%" if {_n} < 1
-    set {_c} to (floor(log({_n}, 1000)))
-    return "%(({_n} / (1000.0^(({_c}) - 1))) / 1000)%%{DJUtils::NumberFormat::%({_c}+1)%}%"
-    
+	return "%{_n}%" if {_n} = (10.0 ^ 309.0) or (-10.0 ^ 309.0)
+	return NegativeFormat({_n}) if {_n} < 0
+	return "%{_n}%" if {_n} < 1
+	set {_c} to (floor(log({_n}, 1000)))
+	return "%(({_n} / (1000.0^(({_c}) - 1))) / 1000)%%{DJUtils::NumberFormat::%({_c}+1)%}%"
+	
 local function NegativeFormat(n: number) :: string:
-    set {_abs} to abs({_n})
-    return join "-", Format({_abs})
+	set {_abs} to abs({_n})
+	return join "-", Format({_abs})
 
 expression small [caps ]of %string%:
-    return type: string
-    get:
-        set {_string} to expr-1
-        loop {DJUtils::Alphabet::*}:
-            replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
-        return {_string}
-        
+	return type: string
+	get:
+		set {_string} to expr-1
+		loop {DJUtils::Alphabet::*}:
+			replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
+		return {_string}
+		
 expression %string% in small[ caps]:
-    return type: string
-    get:
-        set {_string} to expr-1
-        loop {DJUtils::Alphabet::*}:
-            replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
-        return {_string}
-        
+	return type: string
+	get:
+		set {_string} to expr-1
+		loop {DJUtils::Alphabet::*}:
+			replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
+		return {_string}
+		
 expression formatted %timespan%:
-    return type: string 
-    get:
-        set {_seconds} to (expr-1.getTicks() / 20)
-        set {_s} to mod({_seconds}, 60)
-        set {_m} to mod(floor({_seconds} / 60), 60)
-        set {_h} to mod(floor({_seconds} / 3600), 3600)
-        if {_h} = 0:
-            if {_m} = 0:
-                return "%{_s}%s"
-            return "%{_m}%m %{_s}%s"
-        return "%{_h}%h %{_m}%m %{_s}%s"
-        
+	return type: string 
+	get:
+		set {_seconds} to (expr-1.getTicks() / 20)
+		set {_s} to mod({_seconds}, 60)
+		set {_m} to mod(floor({_seconds} / 60), 60)
+		set {_h} to mod(floor({_seconds} / 3600), 3600)
+		if {_h} = 0:
+			if {_m} = 0:
+				return "%{_s}%s"
+			return "%{_m}%m %{_s}%s"
+		return "%{_h}%h %{_m}%m %{_s}%s"
+		
 expression alts of %offline player%:
-    return type: offline players 
-    get:
-        set {_hashedIP} to {DJUtils::IpAddresses::%expr-1's uuid%}
-        loop {DJUtils::IpAddresses::%{_hashedIP}%::*}:
-            add loop-value parsed as offline player to {_p::*}
-        return {_p::*}
+	return type: offline players 
+	get:
+		set {_hashedIP} to {DJUtils::IpAddresses::%expr-1's uuid%}
+		loop {DJUtils::IpAddresses::%{_hashedIP}%::*}:
+			add loop-value parsed as offline player to {_p::*}
+		return {_p::*}
 
 expression formatted %number%:
-    return type: string 
-    get:
-        return Format(expr-1)
+	return type: string 
+	get:
+		return Format(expr-1)
 
 expression midpoint (of|between) %location% and %location%:
-    return type: location 
-    get:
-        set {_v} to vector from expr-1 to expr-2 
-        set vector length of {_v} to ((distance between expr-1 and expr-2) / 2)
-        return expr-1 ~ {_v}
-        
+	return type: location 
+	get:
+		set {_v} to vector from expr-1 to expr-2 
+		set vector length of {_v} to ((distance between expr-1 and expr-2) / 2)
+		return expr-1 ~ {_v}
+		
 on join:
-    wait a second
-    if player is op:
-        set {_latestVersion} to FetchVersion()
+	wait a second
+	if player is op:
+		set {_latestVersion} to FetchVersion()
 		set {_outdated::*} to GetOutdatedAddons()
-        if {_latestVersion} != {DJUtils::Version}:
-            send "<##c23b22>&lDJUtils"
-            send " &f- <##FF6961>Your utility file <##c23b22>%{DJUtils::FileName}%.sk <##FF6961>is out of date! <##FF6961>You can use <##c23b22>/DJUtils Update <##FF6961>to update automatically!"
-            send "  &f⤻ <##FF6961>Your version: <##c23b22>%{DJUtils::Version}%"
-            send "  &f⤻ <##FF6961>Newest version: <##c23b22>%{_latestVersion}%"
+		if {_latestVersion} != {DJUtils::Version}:
+			send "<##c23b22>&lDJUtils"
+			send " &f- <##FF6961>Your utility file <##c23b22>%{DJUtils::FileName}%.sk <##FF6961>is out of date! <##FF6961>You can use <##c23b22>/DJUtils Update <##FF6961>to update automatically!"
+			send "  &f⤻ <##FF6961>Your version: <##c23b22>%{DJUtils::Version}%"
+			send "  &f⤻ <##FF6961>Newest version: <##c23b22>%{_latestVersion}%"
 			send "  &f⤻ <##FF6961>Outdated addons: %{_outdated::*}%" if size of {_outdated::*} > 0
 		else if size of {_outdated::*} > 0:
 			send "<##c23b22>&lDJUtils"
 			send " &f- <##FF6961>Outdated addons: %{_outdated::*}%"
-    
+	
 function FetchVersion() :: string:
-    set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
-    set {_inStream} to new URL({_link})
-    set {_inStream} to {_inStream}.openStream()
-    set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
-    set {_result} to first element out of ({_result} split at nl)
-    set {_result} to 2nd element out of ({_result} split at "Version: ")
-        
-    return {_result}
+	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
+	set {_inStream} to new URL({_link})
+	set {_inStream} to {_inStream}.openStream()
+	set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
+	set {_result} to first element out of ({_result} split at nl)
+	set {_result} to 2nd element out of ({_result} split at "Version: ")
+		
+	return {_result}
 
 local function UpdateSkript():
-    set {_f} to "plugins/Skript/scripts/%{DJUtils::FileName}%.sk"
-    set {_file} to new File({_f})
-    
-    set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
-    set {_inStream} to new URL({_link})
-    set {_inStream} to {_inStream}.openStream()
-    Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
+	set {_f} to "plugins/Skript/scripts/%{DJUtils::FileName}%.sk"
+	set {_file} to new File({_f})
+	
+	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/Utils.sk"
+	set {_inStream} to new URL({_link})
+	set {_inStream} to {_inStream}.openStream()
+	Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
 
 local function DownloadAddon(name: string):
-    set {_f} to "plugins/Skript/scripts/djutils-addons/%{_name}%.sk"
-    set {_file} to new File({_f})
+	set {_f} to "plugins/Skript/scripts/djutils-addons/%{_name}%.sk"
+	set {_file} to new File({_f})
 
-    set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/addons/%{_name}%.sk"
-    set {_inStream} to new URL({_link})
-    set {_inStream} to {_inStream}.openStream()
-    # if file already exists, update it. if not, create it
-    if {_file}.exists():
-        Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
-    else:
-        Files.copy({_inStream}, {_file}.toPath())
+	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/addons/%{_name}%.sk"
+	set {_inStream} to new URL({_link})
+	set {_inStream} to {_inStream}.openStream()
+	# if file already exists, update it. if not, create it
+	if {_file}.exists():
+		Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
+	else:
+		Files.copy({_inStream}, {_file}.toPath())
 
 local function FetchAddonVersion(name: string) :: string:
-    set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/addons/%{_name}%.sk"
-    set {_inStream} to new URL({_link})
-    set {_inStream} to {_inStream}.openStream()
-    set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
-    set {_result} to first element out of ({_result} split at nl)
-    set {_result} to 2nd element out of ({_result} split at "Version: ")
-        
-    return {_result}
+	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/addons/%{_name}%.sk"
+	set {_inStream} to new URL({_link})
+	set {_inStream} to {_inStream}.openStream()
+	set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
+	set {_result} to first element out of ({_result} split at nl)
+	set {_result} to 2nd element out of ({_result} split at "Version: ")
+		
+	return {_result}
 
 local function GetOutdatedAddons() :: strings:
-    set {_files::*} to new File({DJUtils::AddonsFolder}).listFiles()
-    loop {_files::*}:
-        broadcast loop-value
-        set {_latestVersion} to FetchAddonVersion(loop-value)
-        if {_latestVersion} != {DJUtils::Addons::%loop-value%::Version}:
+	set {_files::*} to new File({DJUtils::AddonsFolder}).listFiles()
+	loop {_files::*}:
+		broadcast loop-value
+		set {_latestVersion} to FetchAddonVersion(loop-value)
+		if {_latestVersion} != {DJUtils::Addons::%loop-value%::Version}:
 			add loop-value to {_addons::*}
 	return {_addons::*}
-    
+	
 command /DJUtils [<text>] [<text>] [<text>]:
-    permission: admin.perms
-    trigger:
-        if arg-1 = "Info":
-            send "<##c23b22>&lDJUtils"
-            send " &f- <##A7C7E7>Version: &f%{DJUtils::Version}%"
-            send "  &f⤻ <##A7C7E7>/djUtils Update"
-            send "  &f⤻ <##A7C7E7>/djUtils Reload"
-        else if arg-1 = "Discord":
-            send "<##c23b22>&lDJUtils"
-            send " &f⤻ <##A7C7E7>Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
-        else if arg-1 = "Update":
-            if FetchVersion() = {DJUtils::Version}:
-                send "<##c23b22>&lDJUtils"
-                send " &f⤻ <##A7C7E7>You are already on the latest version."
-                send " &f⤻ <##A7C7E7>New version? Try waiting 5 minutes"
-                stop
-            UpdateSkript()
-            send "<##c23b22>&lDJUtils"
-            send " &f⤻ &7Skript at &e&nplugins/Skript/scripts/%{DJUtils::FileName}%.sk&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
-            send "%nl% &f⤻ &7Would you like to reload the script? &e/djUtils Reload"        
-        else if arg-1 = "Reload":
-            set {_t} to now
-            reload script {DJUtils::FileName}
-            send "<##c23b22>%{DJUtils::FileName}%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
-        else if arg-1 = "Addon":
-            if arg-2 is "Install":
-                DownloadAddon(arg-3)
-            else if arg-2 is "Update":
-                set {_latestVersion} to FetchAddonVersion(arg-3)
-                if {_latestVersion} = {DJUtils::Addons::%arg-3%::Version}:
-                    send "<##c23b22>&lDJUtils"
-                    send " &f⤻ <##A7C7E7>You are already on the latest version."
-                    send " &f⤻ <##A7C7E7>New version? Try waiting 5 minutes"
-                    stop
-                DownloadAddon(arg-3)
-                send "<##c23b22>&lDJUtils"
-                send " &f⤻ &7Addon <##e&n%{DJUtils::FileName}%.sk <##7has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/addons/%arg-1%.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/addons/%arg-1%.sk"
-                send "%nl% &f⤻ &7Would you like to reload the addon? &e/djUtils Addon Reload %arg-3%"
-            else if arg-2 is "Reload":
-                set {_t} to now
-                reload script "djutils-addons/%arg-3%.sk"
-                send "<##c23b22>Addon %arg-3%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
+	permission: admin.perms
+	trigger:
+		if arg-1 = "Info":
+			send "<##c23b22>&lDJUtils"
+			send " &f- <##A7C7E7>Version: &f%{DJUtils::Version}%"
+			send "  &f⤻ <##A7C7E7>/djUtils Update"
+			send "  &f⤻ <##A7C7E7>/djUtils Reload"
+		else if arg-1 = "Discord":
+			send "<##c23b22>&lDJUtils"
+			send " &f⤻ <##A7C7E7>Discord: <link:https://discord.gg/ZeHEePrGhD>https://discord.gg/ZeHEePrGhD"
+		else if arg-1 = "Update":
+			if FetchVersion() = {DJUtils::Version}:
+				send "<##c23b22>&lDJUtils"
+				send " &f⤻ <##A7C7E7>You are already on the latest version."
+				send " &f⤻ <##A7C7E7>New version? Try waiting 5 minutes"
+				stop
+			UpdateSkript()
+			send "<##c23b22>&lDJUtils"
+			send " &f⤻ &7Skript at &e&nplugins/Skript/scripts/%{DJUtils::FileName}%.sk&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/Utils.sk"
+			send "%nl% &f⤻ &7Would you like to reload the script? &e/djUtils Reload"        
+		else if arg-1 = "Reload":
+			set {_t} to now
+			reload script {DJUtils::FileName}
+			send "<##c23b22>%{DJUtils::FileName}%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
+		else if arg-1 = "Addon":
+			if arg-2 is "Install":
+				DownloadAddon(arg-3)
+			else if arg-2 is "Update":
+				set {_latestVersion} to FetchAddonVersion(arg-3)
+				if {_latestVersion} = {DJUtils::Addons::%arg-3%::Version}:
+					send "<##c23b22>&lDJUtils"
+					send " &f⤻ <##A7C7E7>You are already on the latest version."
+					send " &f⤻ <##A7C7E7>New version? Try waiting 5 minutes"
+					stop
+				DownloadAddon(arg-3)
+				send "<##c23b22>&lDJUtils"
+				send " &f⤻ &7Addon <##e&n%{DJUtils::FileName}%.sk <##7has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/addons/%arg-1%.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/addons/%arg-1%.sk"
+				send "%nl% &f⤻ &7Would you like to reload the addon? &e/djUtils Addon Reload %arg-3%"
+			else if arg-2 is "Reload":
+				set {_t} to now
+				reload script "djutils-addons/%arg-3%.sk"
+				send "<##c23b22>Addon %arg-3%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
 			else if arg-2 is "List":
 				set {_files::*} to new File({DJUtils::AddonsFolder}).listFiles()
 				send "<##c23b22>&lDJUtils"
 				send " &f- <##A7C7E7>Available addons:"
 				loop {_files::*}:
 					send "  &f⤻ <##A7C7E7>%loop-value%"
-            else:
-                send "<##c23b22>&lDJUtils"
-                send " &f- <##A7C7E7>Invalid command out of:"
-                send "  &f⤻ <##A7C7E7>/djUtils Addon Install <addon>"
-                send "  &f⤻ <##A7C7E7>/djUtils Addon Update <addon>"
-                send "  &f⤻ <##A7C7E7>/djUtils Addon Reload <addon>"
-        else:
-            send "<##c23b22>&lDJUtils"
-            send " &f- <##A7C7E7>Invalid command out of:"
-            send "  &f⤻ <##A7C7E7>/djUtils Info"
-            send "  &f⤻ <##A7C7E7>/djUtils Update"
-            send "  &f⤻ <##A7C7E7>/djUtils Reload"
-            send "  &f⤻ <##A7C7E7>/djUtils Discord"
+			else:
+				send "<##c23b22>&lDJUtils"
+				send " &f- <##A7C7E7>Invalid command out of:"
+				send "  &f⤻ <##A7C7E7>/djUtils Addon Install <addon>"
+				send "  &f⤻ <##A7C7E7>/djUtils Addon Update <addon>"
+				send "  &f⤻ <##A7C7E7>/djUtils Addon Reload <addon>"
+		else:
+			send "<##c23b22>&lDJUtils"
+			send " &f- <##A7C7E7>Invalid command out of:"
+			send "  &f⤻ <##A7C7E7>/djUtils Info"
+			send "  &f⤻ <##A7C7E7>/djUtils Update"
+			send "  &f⤻ <##A7C7E7>/djUtils Reload"
+			send "  &f⤻ <##A7C7E7>/djUtils Discord"
 			send "  &f⤻ <##A7C7E7>/djUtils Addon"
+			else:
+				send "<##c23b22>&lDJUtils"
+				send " &f- <##A7C7E7>Invalid command out of:"
+				send "  &f⤻ <##A7C7E7>/djUtils Addon Install <addon>"
+				send "  &f⤻ <##A7C7E7>/djUtils Addon Update <addon>"
+				send "  &f⤻ <##A7C7E7>/djUtils Addon Reload <addon>"
+		else:
+			send "<##c23b22>&lDJUtils"
+			send " &f- <##A7C7E7>Invalid command out of:"
+			send "  &f⤻ <##A7C7E7>/djUtils Info"
+			send "  &f⤻ <##A7C7E7>/djUtils Update"
+			send "  &f⤻ <##A7C7E7>/djUtils Reload"
+			send "  &f⤻ <##A7C7E7>/djUtils Discord"
