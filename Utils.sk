@@ -258,12 +258,6 @@ command /DJUtils [<text>] [<text>] [<text>]:
 			send "  &f⤻ <##A7C7E7>/djUtils Reload"
 			send "  &f⤻ <##A7C7E7>/djUtils Discord"
 			send "  &f⤻ <##A7C7E7>/djUtils Addon"
-			else:
-				send "<##c23b22>&lDJUtils"
-				send " &f- <##A7C7E7>Invalid command out of:"
-				send "  &f⤻ <##A7C7E7>/djUtils Addon Install <addon>"
-				send "  &f⤻ <##A7C7E7>/djUtils Addon Update <addon>"
-				send "  &f⤻ <##A7C7E7>/djUtils Addon Reload <addon>"
 		else:
 			send "<##c23b22>&lDJUtils"
 			send " &f- <##A7C7E7>Invalid command out of:"
