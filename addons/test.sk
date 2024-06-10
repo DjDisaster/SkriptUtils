@@ -10,8 +10,7 @@
 
 # Do not delete or modify.
 options:
-	AddonName: Test
+    AddonName: test
 
 on load:
 	set {DJUtils::Addons::{@AddonName}::Version} to "beta-1"
-	set {DJUtils::Addons::{@AddonName}::FileName} to name of script

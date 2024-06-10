@@ -1,0 +1,7 @@
+options:
+    AddonName: tabcompletions
+
+on tab complete of "/djutils":
+	set tab completions for position 1 to "Info", "Discord", "Update", "Reload", "Addon"
+	if tab arg-1 is "Addon":
+		set tab completions for position 2 to "Install", "Update", "Reload", "List"
