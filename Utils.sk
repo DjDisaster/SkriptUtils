@@ -35,18 +35,6 @@ on load:
 	set {_f} to new File({DJUtils::AddonsFolder})
 	if {_f}.exists() = false:
 		{_f}.mkdirs()
-	
-	# Takes 45.44 days to crack an IP with skript 
-	# Can be done a lot faster, but its probably 
-	# still nicer to include something (by faster 
-	# I mean itd probably take minutes per IP)
-	# Minehut will mask IPS anyway	
-	if {DJUtils::Salt} is not set:
-		set {_c::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9"
-		set {_s} to ""
-		loop 16 times:
-			set {_s} to join {_s}, (random element out of {_c::*}) 
-		set {DJUtils::Salt} to {_s}
 		
 	
 	# Takes 45.44 days to crack an IP with skript 
@@ -62,9 +50,7 @@ on load:
 		set {DJUtils::Salt} to {_s}
 		
 on join:
-	set {_hash} to join ({DJUtils::Salt}, ip of player) 
-	loop 1000 times:
-		set {_hash} to {_hash} hashed with SHA-256
+	set {_hash} to ip of player hashed with SHA-256
 	if {DJUtils::IpAddresses::%{_hash}%::*} does not contain player's uuid:
 		add player's uuid to {DJUtils::IpAddresses::%{_hash}%::*} 
 	set {DJUtils::IpAddresses::%player's uuid%} to {_hash}
