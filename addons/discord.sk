@@ -32,7 +32,7 @@ on load:
 		if {Temp::IsInstalling::%name of script%} is set:
 			send "&4[DJUtils] &cWe are reloading the Libraries path to add required dependencies." to console
 			send "&4[DJUtils] &cThis removes the need for a server restart." to console
-			send "&4[DJUtils] &cThis msessage may repeat itself a few times."
+			send "&4[DJUtils] &cThis msessage may repeat itself a few times." to console
 			set {_path} to SkriptMirror.getInstance().getDataFolder().toPath()
 			LibraryLoader.loadLibraries({_path})
 			wait 5 ticks 
