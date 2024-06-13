@@ -21,7 +21,7 @@ import:
 	org.apache.commons.io.IOUtils
 
 on load:
-	set {DJUtils::Version} to "beta-7"
+	set {DJUtils::Version} to "beta-8"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
