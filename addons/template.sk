@@ -10,7 +10,7 @@
 
 # Do not delete or modify.
 options:
-    AddonName: test
+    AddonName: template
 
 on load:
-	set {DJUtils::Addons::{@AddonName}::Version} to "beta-1"
+	set {DJUtils::Addons::{@AddonName}::Version} to "beta-1" # Please match this to the version line.
