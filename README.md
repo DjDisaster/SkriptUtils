@@ -15,6 +15,8 @@
 
 ## Support
 - You can receive support for this utility core on the [discord server](https://discord.gg/xsFsuXFH2E)
+- You can find a list of addon's documentation on the discord server.
+- You can find a list of the addons on the discord server.
 
 ---
 
