@@ -8,7 +8,9 @@
 # Make sure you have downloaded the main file from https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk
 # Please make sure any errors or issues are submitted to our discord at https://discord.gg/wJhaVXNmFe
 
-
+# Do not delete or modify.
+options:
+    AddonName: discord
 
 import:
 	com.btk5h.skriptmirror.LibraryLoader
@@ -27,6 +29,8 @@ import:
 	net.dv8tion.jda.api.requests.GatewayIntent
 	
 on load:
+	set {DJUtils::Addons::{@AddonName}::Version} to "beta-1" # Please match this to the version line.
+	
 	set {_isSetup} to true if (the class "net.dv8tion.jda.api.JDABuilder") is set else false
 	if {_isSetup} = false:
 		if {Temp::IsInstalling::%name of script%} is set:

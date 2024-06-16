@@ -13,49 +13,19 @@
 - To use this you will need Skript and Skript-Reflect.
 - Addons may require different addons which will be shown in the comments of the file.
 
+## Addon creation
+- If you would like to make a addon for DJUtils please do so by using the [template](https://github.com/DjDisaster/SkriptUtils/blob/main/addon-template.sk) provided.
+
 ## Support
 - You can receive support for this utility core on the [discord server](https://discord.gg/xsFsuXFH2E)
 - You can find a list of addon's documentation on the discord server.
 - You can find a list of the addons on the discord server.
 
----
+## Support
+- You can receive support for this utility core on the [discord server](https://discord.gg/xsFsuXFH2E).
+- After making a addon please create a PR request with the addon file or fork the repo and create it in the addons folder.
 
 ## Syntax
-
-### Small Caps
-- **Expression:** `small [caps] of %string%`
-- **Example:** `small caps of "hello world"`
-- **Output:** `ʜᴇʟʟᴏ ᴡᴏʀʟᴅ`
-
-### Number Formatting
-- **Expression:** `formatted %number%`
-- **Examples:**
-  - `formatted 5123`
-    - **Output:** `5.12k`
-  - `formatted -1234`
-    - **Output:** `-1.23k`
-
-### Alts of a Player
-- **Expression:** `alts of %offlineplayer%`
-- **Examples:**
-  - `alts of ("DjDisaster" parsed as player)`
-    - **Output:** `DjDisaster, any alts of DjDisaster`
-  - `ban alts of ("DjDisaster" parsed as player)`
-    - **Output:** `bans any alts from "DjDisaster" and them.`
-
-### Midpoint of Two Locations
-- **Expression:** `midpoint (of|between) %location% and %location%`
-- **Example:** `midpoint between location(1,1,1) and location(3,3,3)`
-  - **Output:** `location(2,2,2)`
-
-### Formatting Time
-- **Expression:** `formatted %timespan%`
-- **Examples:**
-  - `send formatted 1000 seconds`
-    - **Output:** `16m 40s`
-  - `send formatted 10000 seconds`
-    - **Output:** `2h 46m 40s`
-  - `send formatted 30 seconds`
-    - **Output:** `30s`
+- Syntax can be viewed at our [wiki](https://github.com/DjDisaster/SkriptUtils/wiki).
 
 ---
