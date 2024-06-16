@@ -15,10 +15,10 @@
 
 ## Addon creation
 - If you would like to make a addon for DJUtils please do so by using the [template](https://github.com/DjDisaster/SkriptUtils/blob/main/addon-template.sk) provided.
+- After making a addon please create a PR request with the addon file or fork the repo and create it in the addons folder.
 
 ## Support
 - You can receive support for this utility core on the [discord server](https://discord.gg/xsFsuXFH2E).
-- After making a addon please create a PR request with the addon file or fork the repo and create it in the addons folder.
 
 ## Syntax
 - Syntax can be viewed at our [wiki](https://github.com/DjDisaster/SkriptUtils/wiki).
