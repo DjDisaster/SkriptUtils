@@ -24,8 +24,4 @@
 
 ## Support
 - You can receive support for this utility core on the [discord server](https://discord.gg/xsFsuXFH2E).
-
-## Syntax
-- Syntax can be viewed at our [wiki](https://github.com/DjDisaster/SkriptUtils/wiki).
-
 ---
