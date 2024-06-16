@@ -1,4 +1,4 @@
-# Version: beta-1
+# Version: beta-2
 # Do not delete or modify the version line.
 
 # This is an extention for DJUtils.
@@ -8,9 +8,7 @@
 # Make sure you have downloaded the main file from https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk
 # Please make sure any errors or issues are submitted to our discord at https://discord.gg/wJhaVXNmFe
 
-# Do not delete or modify.
-options:
-    AddonName: discord
+
 
 import:
 	com.btk5h.skriptmirror.LibraryLoader
@@ -27,16 +25,16 @@ import:
 	net.dv8tion.jda.api.hooks.EventListener
 	net.dv8tion.jda.api.events.message.MessageReceivedEvent
 	net.dv8tion.jda.api.requests.GatewayIntent
+	net.dv8tion.jda.api.utils.MemberCachePolicy
+	net.dv8tion.jda.api.utils.cache.CacheFlag
 	
 on load:
-	set {DJUtils::Addons::{@AddonName}::Version} to "beta-1" # Please match this to the version line.
-	
 	set {_isSetup} to true if (the class "net.dv8tion.jda.api.JDABuilder") is set else false
 	if {_isSetup} = false:
 		if {Temp::IsInstalling::%name of script%} is set:
 			send "&4[DJUtils] &cWe are reloading the Libraries path to add required dependencies." to console
 			send "&4[DJUtils] &cThis removes the need for a server restart." to console
-			send "&4[DJUtils] &cThis msessage may repeat itself a few times." to console
+			send "&4[DJUtils] &cThis msessage may repeat itself a few times."
 			set {_path} to SkriptMirror.getInstance().getDataFolder().toPath()
 			LibraryLoader.loadLibraries({_path})
 			wait 5 ticks 
@@ -68,14 +66,14 @@ effect login to bot named %string% with token %string%:
 		set {DiscordBots::%expr-1%} to JDABuilder.createDefault(expr-2)
 		set {_value} to expr-1
 		create new section and store it in {_load}:
+			{DiscordBots::%{_value}%}.setMemberCachePolicy(MemberCachePolicy.ALL)
 			{DiscordBots::%{_value}%}.setBulkDeleteSplittingEnabled(false)
 			{DiscordBots::%{_value}%}.enableIntents(GatewayIntent.GUILD_MEMBERS)
 			{DiscordBots::%{_value}%}.enableIntents(GatewayIntent.MESSAGE_CONTENT)
-			broadcast "%{DiscordBots::%{_value}%}%"
-			set {DiscordBots::%{_value}%} to {DiscordBots::%{_value}%}.build()
-			broadcast "%{DiscordBots::%{_value}%}%"
 			
-		broadcast "CLASS: %class of {_load}%"
+			set {DiscordBots::%{_value}%} to {DiscordBots::%{_value}%}.build()
+		
+			
 		run section {_load} async
 		
 effect add text listener %section% to %string%:
@@ -107,6 +105,7 @@ effect set activity of %string% to (1:watching|2:listening|3:streaming|4:competi
 			{DiscordBots::%expr-1%}.getPresence().setActivity(Activity.streaming(expr-2))
 		if parser mark = 4:
 			{DiscordBots::%expr-1%}.getPresence().setActivity(Activity.competing(expr-2))
+		
 	
 expression (text|message) of %object%:
 	return type: string
@@ -129,6 +128,34 @@ expression channel (with id|from id) %string% (with|using) %string%:
 		if {DiscordBots::%expr-2%} is not set:
 			stop 
 		return {DiscordBots::%expr-2%}.getTextChannelById(expr-1)
+
+expression role (with id|from id) %string% in %object%:
+	return type: object 
+	get:
+		# Could probably use some more safety for if expr-2 is invalid
+		return expr-2.getRoleById(expr-1)
+		
+effect add role %object% to %object% in guild %object%:
+	parse:
+		continue 
+	trigger:
+		if {DiscordBots::%expr-4%} is not set:
+			stop 
+		expr-3.addRoleToMember(expr-2, expr-1).queue()
+			
+expression guild with id %string% using %string%:
+	return type: object 
+	get:
+		if {DiscordBots::%expr-2%} is not set:
+			stop 
+		return {DiscordBots::%expr-2%}.getGuildById(expr-1)
+		
+expression [guild] member with id %string% using %string%:
+	return type: object
+	get:
+		if {DiscordBots::%expr-2%} is not set:
+			stop 
+		return {DiscordBots::%expr-2%}.retrieveUserById(expr-1).complete()
 		
 effect delete message %object%:
 	parse:
