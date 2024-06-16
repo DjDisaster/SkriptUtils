@@ -17,6 +17,11 @@
 - If you would like to make a addon for DJUtils please do so by using the [template](https://github.com/DjDisaster/SkriptUtils/blob/main/addon-template.sk) provided.
 
 ## Support
+- You can receive support for this utility core on the [discord server](https://discord.gg/xsFsuXFH2E)
+- You can find a list of addon's documentation on the discord server.
+- You can find a list of the addons on the discord server.
+
+## Support
 - You can receive support for this utility core on the [discord server](https://discord.gg/xsFsuXFH2E).
 - After making a addon please create a PR request with the addon file or fork the repo and create it in the addons folder.
 
