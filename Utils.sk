@@ -1,4 +1,4 @@
-# Version: beta-8
+# Version: beta-9
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -21,7 +21,7 @@ import:
 	org.apache.commons.io.IOUtils
 
 on load:
-	set {DJUtils::Version} to "beta-8"
+	set {DJUtils::Version} to "beta-9"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -82,7 +82,7 @@ expression %string% in small[ caps]:
 			replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
 		return {_string}
 		
-expression formatted %timespan%:
+expression formatted timespan %timespan%:
 	return type: string 
 	get:
 		set {_seconds} to (expr-1.getTicks() / 20)
@@ -103,7 +103,7 @@ expression alts of %offline player%:
 			add loop-value parsed as offline player to {_p::*}
 		return {_p::*}
 
-expression formatted %number%:
+expression formatted number %number%:
 	return type: string 
 	get:
 		return Format(expr-1)
