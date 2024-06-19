@@ -14,8 +14,8 @@
 - Addons may require different addons which will be shown in the comments of the file.
 
 ## Addon creation
-- If you would like to make a addon for DJUtils please do so by using the [template](https://github.com/DjDisaster/SkriptUtils/blob/main/addon-template.sk) provided.
 - If you want your addon to be listed on the github repo (and the autocompletes) please ask on the discord if the addon would be added and what it contains.
+- If you would like to make a addon for DJUtils please do so by using the [template](https://github.com/DjDisaster/SkriptUtils/blob/main/addon-template.sk) provided.
 - Addons are generally used for things that require dependencies such as JDA or Skbee.
 
 ## Support
