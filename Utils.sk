@@ -1,4 +1,4 @@
-# Version: beta-8
+# Version: beta-10
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -21,7 +21,7 @@ import:
 	org.apache.commons.io.IOUtils
 
 on load:
-	set {DJUtils::Version} to "beta-8"
+	set {DJUtils::Version} to "beta-10"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -82,7 +82,7 @@ expression %string% in small[ caps]:
 			replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
 		return {_string}
 		
-expression formatted %timespan%:
+expression formatted timespan %timespan%:
 	return type: string 
 	get:
 		set {_seconds} to (expr-1.getTicks() / 20)
@@ -103,7 +103,7 @@ expression alts of %offline player%:
 			add loop-value parsed as offline player to {_p::*}
 		return {_p::*}
 
-expression formatted %number%:
+expression formatted number %number%:
 	return type: string 
 	get:
 		return Format(expr-1)
@@ -208,9 +208,15 @@ command /DJUtils [<text>] [<text>] [<text>]:
 			send "<##c23b22>%{DJUtils::FileName}%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
 		else if arg-1 = "Addon":
 			if arg-2 is "Install":
-				DownloadAddon(arg-3)
+				if arg-3 is not set:
+					send "&cPlease specify the addon name"
+					stop
 				send "<##c23b22>%arg-3%.sk <##FF6961>has been downloaded."
+				DownloadAddon(arg-3)
 			else if arg-2 is "Update":
+				if arg-3 is not set:
+					send "&cPlease specify the addon name"
+					stop
 				set {_latestVersion} to FetchAddonVersion(arg-3)
 				if {_latestVersion} = {DJUtils::Addons::%arg-3%::Version}:
 					send "<##c23b22>&lDJUtils"
@@ -222,6 +228,9 @@ command /DJUtils [<text>] [<text>] [<text>]:
 				send " &f⤻ &7Addon <##e&n%{DJUtils::FileName}%.sk <##7has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/addons/%arg-1%.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/addons/%arg-1%.sk"
 				send "%nl% &f⤻ &7Would you like to reload the addon? &e/djUtils Addon Reload %arg-3%"
 			else if arg-2 is "Reload":
+				if arg-3 is not set:
+					send "&cPlease specify the addon name"
+					stop
 				set {_t} to now
 				reload script "djutils-addons/%arg-3%.sk"
 				send "<##c23b22>Addon %arg-3%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
