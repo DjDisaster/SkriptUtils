@@ -15,6 +15,8 @@
 
 ## Addon creation
 - If you would like to make a addon for DJUtils please do so by using the [template](https://github.com/DjDisaster/SkriptUtils/blob/main/addon-template.sk) provided.
+- If you want your addon to be listed on the github repo (and the autocompletes) please ask on the discord if the addon would be added and what it contains.
+- Addons are generally used for things that require dependencies such as JDA or Skbee.
 
 ## Support
 - You can receive support for this utility core on the [discord server](https://discord.gg/xsFsuXFH2E)
