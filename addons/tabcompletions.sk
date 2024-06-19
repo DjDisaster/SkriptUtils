@@ -11,12 +11,35 @@
 # Do not delete or modify.
 options:
     AddonName: tabcompletions
+	
+import:
+	java.io.File
+	java.nio.file.Files
+	java.nio.charset.StandardCharsets
+	java.net.URL
+	org.apache.commons.io.IOUtils
+	java.util.regex.Matcher
+	java.util.regex.Pattern
 
 on load:
 	set {DJUtils::Addons::{@AddonName}::Version} to "beta-1" # Please match this to the version line.
-
 
 on tab complete of "/djutils":
 	set tab completions for position 1 to "Info", "Discord", "Update", "Reload", "Addon"
 	if tab arg-1 is "Addon":
 		set tab completions for position 2 to "Install", "Update", "Reload", "List"
+	if tab arg-2 is "Update" or "Reload":
+		set tab completions for position 3 to indexes of {DJUtils::Addons::*}
+	if tab arg-2 is "Install":
+		set {_link} to "https://api.github.com/repositories/801609174/contents/addons"
+		set {_inStream} to new URL({_link})
+		set {_inStream} to {_inStream}.openStream()
+		set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
+		
+		set {_pattern} to Pattern.compile("name"":\s*""([^""]+)")
+		set {_matcher} to {_pattern}.matcher({_result})
+
+		{_matcher}.find()
+		add {_matcher}.group(1) to {_addons::*}
+
+		set tab completions for position 3 to {_addons::*}
