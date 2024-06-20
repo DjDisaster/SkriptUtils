@@ -1,0 +1,3 @@
+every 5 ticks:
+	loop all players in radius 3 around {TPOS}:
+		teleport loop-player to {CLOC}
