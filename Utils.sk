@@ -1,4 +1,4 @@
-# Version: beta-9
+# Version: beta-10
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -19,9 +19,11 @@ import:
 	java.net.URL
 	java.nio.file.StandardCopyOption
 	org.apache.commons.io.IOUtils
+	javax.imageio.ImageIO
+	org.bukkit.ChatColor
 
 on load:
-	set {DJUtils::Version} to "beta-9"
+	set {DJUtils::Version} to "beta-10"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -180,6 +182,29 @@ local function GetOutdatedAddons() :: strings:
 		if {_latestVersion} != {DJUtils::Addons::%loop-value%::Version}:
 			add loop-value to {_addons::*}
 	return {_addons::*}
+	
+function SkullChat(p: object, d: number) :: strings:
+	set {_loc} to new URL("https://minotar.net/avatar/%{_p}%/%{_d}%")
+	set {_image} to ImageIO.read({_loc})
+	set {_height} to {_image}.getHeight()
+	set {_width} to {_image}.getWidth()
+	set {_size} to {_d}
+	set {_mult1} to {_height} / {_size}
+	set {_mult2} to {_width} / {_size}
+	loop {_size} times:
+		loop {_size} times:
+			set {_rgb} to {_image}.getRGB((((loop-value-1) - 1) * {_mult2}), (((loop-value-2) - 1) * {_mult1}))
+			set {_color} to new (the class "java.awt.Color")({_rgb})
+			set {_chatcolor} to (the class "net.md_5.bungee.api.ChatColor").of({_color})
+			set {_image1::%loop-value-2%} to join {_image1::%loop-value-2%}, {_chatcolor}.toString(), "&l⬛"
+	broadcast {_image1::*}
+	
+expression (chat|text) skull of %object% [[with] density %number%]:
+	return type: string 
+	get:
+		if expr-2 = 1:
+			return SkullChat(expr-1, 16)
+		return SkullChat(expr-1, expr-2)
 	
 command /DJUtils [<text>] [<text>] [<text>]:
 	permission: admin.perms
