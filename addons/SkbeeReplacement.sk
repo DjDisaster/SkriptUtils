@@ -1,0 +1,123 @@
+# Version: beta-1
+# Do not delete or modify the version line.
+
+# IMPORTANT: THIS IS NOT CLOSE TO BEING COMPLETED 
+# AND SHOULD NOT BE USED CURRENTLY
+# IF BEING USED ITS NOT ADVICED TO USE WITH SKBEE.
+
+# This is an extention for DJUtils.
+# By using this program you agree to the usage:
+# https://github.com/DjDisaster/SkriptUtils/blob/main/USAGE.md
+
+# Make sure you have downloaded the main file from https://github.com/DjDisaster/SkriptUtils/blob/main/Utils.sk
+# Please make sure any errors or issues are submitted to our discord at https://discord.gg/wJhaVXNmFe
+
+# This file will automatically install dependencies, such as NBT-API.
+# The file is likely to reload with errors the first time.
+
+
+import:
+	com.btk5h.skriptmirror.LibraryLoader
+	com.btk5h.skriptmirror.SkriptMirror 
+	java.io.File
+	java.nio.file.Files
+	java.nio.charset.StandardCharsets
+	java.net.URL
+	java.nio.file.StandardCopyOption
+	org.apache.commons.io.IOUtils
+	
+	de.tr7zw.nbtapi.NBT
+	de.tr7zw.nbtapi.NBTReflectionUtil
+	de.tr7zw.nbtapi.utils.nmsmappings.ReflectionMethod
+	de.tr7zw.nbtapi.NBTItem 
+	
+	net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+	net.kyori.adventure.text.minimessage.MiniMessage
+	
+	
+on load:
+	set {_isSetup} to true if (the class "de.tr7zw.nbtapi.NBT") is set else false
+	if {_isSetup} = false:
+		if {Temp::IsInstalling::%name of script%} is set:
+			send "&4[DJUtils] &cWe are reloading the Libraries path to add required dependencies." to console
+			send "&4[DJUtils] &cThis removes the need for a server restart." to console
+			send "&4[DJUtils] &cThis msessage may repeat itself a few times."
+			set {_path} to SkriptMirror.getInstance().getDataFolder().toPath()
+			LibraryLoader.loadLibraries({_path})
+			wait 5 ticks 
+			reload script name of script
+			wait 60 seconds
+			delete {Temp::IsInstalling::%name of script%}
+			stop 
+			
+			
+		download_dependencies()
+		set {Temp::IsInstalling::%name of script%} to true
+		wait 5 ticks 
+		send "&4[JavaSkript] &cYou have installed a dependency. The reload may of had errors in it, required dependencies are currently being installed, this is due to skript limitations." to (all players where [input is op], console)
+		reload script name of script
+	else:
+		if {Temp::IsInstalling::%name of script%} is set:
+			delete {Temp::IsInstalling::%name of script%}
+			send "&4[JavaSkript] &aFile %name of script%.sk has been reloaded as dependencies should now be installed." to (all players where [input is op], console)
+		set {Temp::%name of script%::IsSetup} to true
+
+
+expression nbt [compound] (from|of) %object%:
+	return type: object
+	get:
+		if "%class of expr-1%" = "java.lang.String":
+			return NBT.parseNBT(expr-1)
+		broadcast "%expr-1% - %class of expr-1%"
+		if "%class of expr-1%" = "org.bukkit.craftbukkit.inventory.CraftItemStack":
+			return NBTItem.convertItemtoNBT(expr-1)
+		if "%class of expr-1%" = "ch.njol.skript.expressions.ExprTool$1$2":
+			return NBTItem.convertItemtoNBT(expr-1.getItem())
+
+expression minimessage (of|from) %string%:
+	return type: string 
+	get:
+		return colored LegacyComponentSerializer.legacyAmpersand().serialize(MiniMessage.miniMessage().deserialize(expr-1))
+		
+effect set [nbt] [1:String|2:Int[eger]|3:IntArray|4:UUIDList|5:FloatList|6:DoubleList|7:LongList|8:CompoundList] tag %string% of %object% to %object%:
+	parse:
+		continue 
+	trigger:
+		broadcast "%parser mark%"
+
+# List from: https://github.com/tr7zw/Item-NBT-API/blob/5280ba82a2fb05b6cb150cb168b7f14b9f8f9c69/item-nbt-api/src/main/java/de/tr7zw/changeme/nbtapi/iface/ReadWriteNBT.java#L9
+on load:
+	set {DJUtils::NBT::1} to (the class "java.lang.String")
+	set {DJUtils::NBT::2} to (the class "java.lang.Integer")
+	set {DJUtils::NBT::3} to (the class "java.lang.Double")
+	set {DJUtils::NBT::4} to (the class "java.lang.Byte")
+	set {DJUtils::NBT::5} to (the class "java.lang.Short")
+	set {DJUtils::NBT::6} to (the class "java.lang.Long")
+	
+expression [nbt] [1:String|2:Int[eger]|3:Double|4:Byte|5:Short|6:Long] tag %string% of %object%:
+	return type: object
+	get:
+		return GetNbt(parser mark, expr-1, expr-2)
+		
+function GetNbt(parser_mark: number, index: string, nbt: object) :: object:
+	if {_index} contains ";":
+		set {_s::*} to {_index} split at ";" 
+		set {_nbt} to nbt from "%{_nbt}.getCompound().get({_s::1})%"
+		delete {_s::1}
+		return GetNbt({_parser_mark}, join {_s::*} with ";", {_nbt})
+		
+	if {_parser_mark} = 0:
+		set {_thing} to {_nbt}.getCompound().get({_index})
+		if {_thing}.data is set:
+			return {_thing}.data
+		return nbt from "%{_nbt}.getCompound().get({_index})%"
+	return {_nbt}.getOrNull({_index}, {DJUtils::NBT::%{_parser_mark}%})
+		
+local function download_dependencies():
+	set {_f} to "plugins/skript-reflect/NBT-API.jar"
+	set {_file} to new File({_f})
+	
+	set {_link} to "https://ci.codemc.io/job/Tr7zw/job/Item-NBT-API/lastBuild/artifact/item-nbt-plugin/target/item-nbt-api-plugin-2.13.1.jar"
+	set {_inStream} to new URL({_link})
+	set {_inStream} to {_inStream}.openStream()
+	Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
