@@ -1,4 +1,4 @@
-# Version: beta-10
+# Version: beta-11
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -19,9 +19,11 @@ import:
 	java.net.URL
 	java.nio.file.StandardCopyOption
 	org.apache.commons.io.IOUtils
+	javax.imageio.ImageIO
+	org.bukkit.ChatColor
 
 on load:
-	set {DJUtils::Version} to "beta-10"
+	set {DJUtils::Version} to "beta-11"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -29,24 +31,26 @@ on load:
 	set {DJUtils::NumberFormat::*} to (",k,m,b,t,qa,qn,sx,sp,oc,no,dc,ud,dd,td,qad,qnd,sxd,spd,ocd,nod,vg,unvg,dovg,trvg,quatvg,quinv,sexvg,septvg,octvg,novvg,trig,untrig,dotrig,tetrig,quatrig,quintrig,sextrig,septrig,octrig,novtrig,quadg,unquadg,doquadg,tequadg,quadorquadg,quinquadg,sexquadg,sepquadg,octoquadg,novquadg,quinquag,unquinquag,doquinquag,tequinquag,quadoquinquag,quinquinquag,sexquinquag,sepquinquag,octoquinquag,novquinquag,sexag,unsexag,dosexag,tesexag,quadsexag,quinsexag,sexsexag,sepsexag,octosexag,novsexag,septg,unseptg,doseptg,teseptg,quadoseptg,quinseptg,sexseptg,sepseptg,octoseptg,novseptg,octog,unoctog,dooctog,teoctog,quadoctog,quinoctog,sexoctog,sepoctog,octooctog,novoctog,nonag,unnonag,dononag,tenonag,quadononag,quinnonag,sexnonag,sepnonag,octononag,novnonag,centg,uncentg" split at ",")
 	set {DJUtils::FileName} to name of script
 
+	delete {DJUtils::Addons::*} 
+
 	set {DJUtils::AddonsFolder} to "plugins/Skript/scripts/djutils-addons"
 	set {_f} to new File({DJUtils::AddonsFolder})
 	if {_f}.exists() = false:
 		{_f}.mkdirs()
 		
+
+	# Takes 45.44 days to crack an IP with skript 
+	# Can be done a lot faster, but its probably 
+	# still nicer to include something (by faster 
+	# I mean itd probably take minutes per IP)
+	# Minehut will mask IPS anyway	
 	if {DJUtils::Salt} is not set:
 		set {_c::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|1|2|3|4|5|6|7|8|9"
 		set {_s} to ""
 		loop 16 times:
 			set {_s} to join {_s}, (random element out of {_c::*}) 
 		set {DJUtils::Salt} to {_s}
-	
-	set {_addons::*} to indexes of {DJUtils::Addons::*}
-	loop ...(new File({DJUtils::AddonsFolder}).listFiles()):
-		if {_addons::*} does not contain loop-value.getName():
-			broadcast "<##c23b22>&lDJUtils"
-			broadcast " &f- <##A7C7E7>Addon check failed %loop-value.getName()%'s file is missing"
-			
+		
 on join:
 	set {_hash} to ip of player hashed with SHA-256
 	if {DJUtils::IpAddresses::%{_hash}%::*} does not contain player's uuid:
@@ -101,7 +105,7 @@ expression alts of %offline player%:
 			add loop-value parsed as offline player to {_p::*}
 		return {_p::*}
 
-expression formatted (num|number) %number%:
+expression formatted number %number%:
 	return type: string 
 	get:
 		return Format(expr-1)
@@ -147,25 +151,22 @@ local function UpdateSkript():
 	set {_inStream} to {_inStream}.openStream()
 	Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
 
-local function DownloadAddon(name: string):: boolean:
+local function DownloadAddon(name: string):
 	set {_f} to "plugins/Skript/scripts/djutils-addons/%{_name}%.sk"
 	set {_file} to new File({_f})
 
 	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/addons/%{_name}%.sk"
 	set {_inStream} to new URL({_link})
 	set {_inStream} to {_inStream}.openStream()
-
 	# if file already exists, update it. if not, create it
 	if {_file}.exists():
 		Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
 	else:
 		Files.copy({_inStream}, {_file}.toPath())
-	return true
 
 local function FetchAddonVersion(name: string) :: string:
 	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/addons/%{_name}%.sk"
 	set {_inStream} to new URL({_link})
-
 	set {_inStream} to {_inStream}.openStream()
 	set {_result} to IOUtils.toString({_inStream}, StandardCharsets.UTF_8)
 	set {_result} to first element out of ({_result} split at nl)
@@ -176,11 +177,33 @@ local function FetchAddonVersion(name: string) :: string:
 local function GetOutdatedAddons() :: strings:
 	set {_files::*} to new File({DJUtils::AddonsFolder}).listFiles()
 	loop {_files::*}:
-		broadcast loop-value
 		set {_latestVersion} to FetchAddonVersion(loop-value)
 		if {_latestVersion} != {DJUtils::Addons::%loop-value%::Version}:
 			add loop-value to {_addons::*}
 	return {_addons::*}
+	
+function SkullChat(p: object, d: number) :: strings:
+	set {_loc} to new URL("https://minotar.net/avatar/%{_p}%/%{_d}%")
+	set {_image} to ImageIO.read({_loc})
+	set {_height} to {_image}.getHeight()
+	set {_width} to {_image}.getWidth()
+	set {_size} to {_d}
+	set {_mult1} to {_height} / {_size}
+	set {_mult2} to {_width} / {_size}
+	loop {_size} times:
+		loop {_size} times:
+			set {_rgb} to {_image}.getRGB((((loop-value-1) - 1) * {_mult2}), (((loop-value-2) - 1) * {_mult1}))
+			set {_color} to new (the class "java.awt.Color")({_rgb})
+			set {_chatcolor} to (the class "net.md_5.bungee.api.ChatColor").of({_color})
+			set {_image1::%loop-value-2%} to join {_image1::%loop-value-2%}, {_chatcolor}.toString(), "&l⬛"
+	return {_image1::*}
+	
+expression (chat|text) skull of %object% [[with] density %number%]:
+	return type: string 
+	get:
+		if expr-2 = 1:
+			return SkullChat(expr-1, 16)
+		return SkullChat(expr-1, expr-2)
 	
 command /DJUtils [<text>] [<text>] [<text>]:
 	permission: admin.perms
@@ -209,11 +232,8 @@ command /DJUtils [<text>] [<text>] [<text>]:
 			send "<##c23b22>%{DJUtils::FileName}%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
 		else if arg-1 = "Addon":
 			if arg-2 is "Install":
-				if DownloadAddon(arg-3) is false:
-					send "&cInvalid addon"
-					stop
-				else:
-					send "<##c23b22>%arg-3%.sk <##FF6961>has been downloaded."
+				DownloadAddon(arg-3)
+				send "<##c23b22>%arg-3%.sk <##FF6961>has been downloaded."
 			else if arg-2 is "Update":
 				set {_latestVersion} to FetchAddonVersion(arg-3)
 				if {_latestVersion} = {DJUtils::Addons::%arg-3%::Version}:
@@ -221,16 +241,11 @@ command /DJUtils [<text>] [<text>] [<text>]:
 					send " &f⤻ <##A7C7E7>You are already on the latest version."
 					send " &f⤻ <##A7C7E7>New version? Try waiting 5 minutes"
 					stop
-				if DownloadAddon(arg-3) is false:
-					send "&cInvalid addon"
-					stop
+				DownloadAddon(arg-3)
 				send "<##c23b22>&lDJUtils"
-				send " &f⤻ &7Addon &e&n%{DJUtils::FileName}%.sk&7 has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/addons/%arg-3%.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/addons/%arg-3%.sk"
+				send " &f⤻ &7Addon <##e&n%{DJUtils::FileName}%.sk <##7has been updated from <link:https://github.com/DjDisaster/SkriptUtils/blob/main/addons/%arg-1%.sk>&b&ngithub.com/DjDisaster/SkriptUtils/blob/main/addons/%arg-1%.sk"
 				send "%nl% &f⤻ &7Would you like to reload the addon? &e/djUtils Addon Reload %arg-3%"
 			else if arg-2 is "Reload":
-				if arg-3 is not set:
-					send "&cInvalid addon"
-					stop
 				set {_t} to now
 				reload script "djutils-addons/%arg-3%.sk"
 				send "<##c23b22>Addon %arg-3%.sk <##FF6961>has been reloaded in <##c23b22>%difference between now and {_t}%"
