@@ -31,14 +31,12 @@ on load:
 	set {DJUtils::NumberFormat::*} to (",k,m,b,t,qa,qn,sx,sp,oc,no,dc,ud,dd,td,qad,qnd,sxd,spd,ocd,nod,vg,unvg,dovg,trvg,quatvg,quinv,sexvg,septvg,octvg,novvg,trig,untrig,dotrig,tetrig,quatrig,quintrig,sextrig,septrig,octrig,novtrig,quadg,unquadg,doquadg,tequadg,quadorquadg,quinquadg,sexquadg,sepquadg,octoquadg,novquadg,quinquag,unquinquag,doquinquag,tequinquag,quadoquinquag,quinquinquag,sexquinquag,sepquinquag,octoquinquag,novquinquag,sexag,unsexag,dosexag,tesexag,quadsexag,quinsexag,sexsexag,sepsexag,octosexag,novsexag,septg,unseptg,doseptg,teseptg,quadoseptg,quinseptg,sexseptg,sepseptg,octoseptg,novseptg,octog,unoctog,dooctog,teoctog,quadoctog,quinoctog,sexoctog,sepoctog,octooctog,novoctog,nonag,unnonag,dononag,tenonag,quadononag,quinnonag,sexnonag,sepnonag,octononag,novnonag,centg,uncentg" split at ",")
 	set {DJUtils::FileName} to name of script
 
-	delete {DJUtils::Addons::*} 
-
 	set {DJUtils::AddonsFolder} to "plugins/Skript/scripts/djutils-addons"
 	set {_f} to new File({DJUtils::AddonsFolder})
 	if {_f}.exists() = false:
 		{_f}.mkdirs()
 		
-
+	
 	# Takes 45.44 days to crack an IP with skript 
 	# Can be done a lot faster, but its probably 
 	# still nicer to include something (by faster 
