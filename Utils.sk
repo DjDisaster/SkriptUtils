@@ -1,4 +1,4 @@
-# Version: beta-10
+# Version: beta-11
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -23,7 +23,7 @@ import:
 	org.bukkit.ChatColor
 
 on load:
-	set {DJUtils::Version} to "beta-10"
+	set {DJUtils::Version} to "beta-11"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -177,7 +177,6 @@ local function FetchAddonVersion(name: string) :: string:
 local function GetOutdatedAddons() :: strings:
 	set {_files::*} to new File({DJUtils::AddonsFolder}).listFiles()
 	loop {_files::*}:
-		broadcast loop-value
 		set {_latestVersion} to FetchAddonVersion(loop-value)
 		if {_latestVersion} != {DJUtils::Addons::%loop-value%::Version}:
 			add loop-value to {_addons::*}
@@ -197,7 +196,7 @@ function SkullChat(p: object, d: number) :: strings:
 			set {_color} to new (the class "java.awt.Color")({_rgb})
 			set {_chatcolor} to (the class "net.md_5.bungee.api.ChatColor").of({_color})
 			set {_image1::%loop-value-2%} to join {_image1::%loop-value-2%}, {_chatcolor}.toString(), "&l⬛"
-	broadcast {_image1::*}
+	return {_image1::*}
 	
 expression (chat|text) skull of %object% [[with] density %number%]:
 	return type: string 
