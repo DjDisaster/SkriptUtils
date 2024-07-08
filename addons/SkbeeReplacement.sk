@@ -15,6 +15,10 @@
 # This file will automatically install dependencies, such as NBT-API.
 # The file is likely to reload with errors the first time.
 
+# Do not delete or modify.
+options:
+    AddonName: SkbeeReplacement
+
 
 import:
 	com.btk5h.skriptmirror.LibraryLoader
@@ -36,6 +40,8 @@ import:
 	
 	
 on load:
+	set {DJUtils::Addons::{@AddonName}::Version} to "beta-1"
+
 	set {_isSetup} to true if (the class "de.tr7zw.nbtapi.NBT") is set else false
 	if {_isSetup} = false:
 		if {Temp::IsInstalling::%name of script%} is set:

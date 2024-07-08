@@ -23,11 +23,7 @@
 - You can find a list of addon's documentation on the discord server.
 - You can find a list of the addons on the discord server.
 
-## Support
-- You can receive support for this utility core on the [discord server](https://discord.gg/xsFsuXFH2E).
-- After making a addon please create a PR request with the addon file or fork the repo and create it in the addons folder.
-
 ## Syntax
-- Syntax can be viewed at our [wiki](https://github.com/DjDisaster/SkriptUtils/wiki).
+- Syntax can be viewed at our [discord server](https://discord.gg/xsFsuXFH2E).
 
 ---
