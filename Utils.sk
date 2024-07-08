@@ -23,7 +23,7 @@ import:
 	org.bukkit.ChatColor
 
 on load:
-	set {DJUtils::Version} to "beta-11"
+	set {DJUtils::Version} to "beta-12"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -150,6 +150,7 @@ local function UpdateSkript():
 	Files.copy({_inStream}, {_file}.toPath(), StandardCopyOption.REPLACE_EXISTING)
 
 local function DownloadAddon(name: string):
+	stop if {_name} is not set
 	set {_f} to "plugins/Skript/scripts/djutils-addons/%{_name}%.sk"
 	set {_file} to new File({_f})
 
@@ -163,6 +164,7 @@ local function DownloadAddon(name: string):
 		Files.copy({_inStream}, {_file}.toPath())
 
 local function FetchAddonVersion(name: string) :: string:
+	stop if {_name} is not set
 	set {_link} to "https://raw.githubusercontent.com/DjDisaster/SkriptUtils/main/addons/%{_name}%.sk"
 	set {_inStream} to new URL({_link})
 	set {_inStream} to {_inStream}.openStream()
