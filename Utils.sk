@@ -1,4 +1,4 @@
-# Version: beta-12
+# Version: beta-13
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -23,7 +23,7 @@ import:
 	org.bukkit.ChatColor
 
 on load:
-	set {DJUtils::Version} to "beta-12"
+	set {DJUtils::Version} to "beta-13"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -183,13 +183,14 @@ local function GetOutdatedAddons() :: strings:
 	return {_addons::*}
 	
 function SkullChat(p: object, d: number) :: strings:
-	set {_loc} to new URL("https://minotar.net/avatar/%{_p}%/%{_d}%")
+	set {_loc} to new URL("https://crafatar.com/avatars/%uuid of {_P}%/?size=%{_d}%")
 	set {_image} to ImageIO.read({_loc})
 	set {_height} to {_image}.getHeight()
 	set {_width} to {_image}.getWidth()
 	set {_size} to {_d}
 	set {_mult1} to {_height} / {_size}
 	set {_mult2} to {_width} / {_size}
+	broadcast "%{_size}%"
 	loop {_size} times:
 		loop {_size} times:
 			set {_rgb} to {_image}.getRGB((((loop-value-1) - 1) * {_mult2}), (((loop-value-2) - 1) * {_mult1}))
