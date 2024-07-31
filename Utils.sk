@@ -1,4 +1,4 @@
-# Version: beta-13
+# Version: beta-14
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -21,9 +21,11 @@ import:
 	org.apache.commons.io.IOUtils
 	javax.imageio.ImageIO
 	org.bukkit.ChatColor
-
+	org.apache.commons.codec.binary.Base64
+	java.lang.String
+	
 on load:
-	set {DJUtils::Version} to "beta-13"
+	set {DJUtils::Version} to "beta-14"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -114,6 +116,49 @@ expression midpoint (of|between) %location% and %location%:
 		set {_v} to vector from expr-1 to expr-2 
 		set vector length of {_v} to ((distance between expr-1 and expr-2) / 2)
 		return expr-1 ~ {_v}
+		
+expression encoded %string% with base 64:
+	return type: string 
+	get:
+		return new String(Base64.encodeBase64(expr-1.getBytes()))
+		
+expression decoded %string% with base 64:
+	return type: string 
+	get:
+		return new String(Base64.decodeBase64(expr-1.getBytes()))
+		
+expression base 64 [string] of %string%:
+	return type: string 
+	get:
+		return VarListToString(expr-1)
+		
+effect map base 64 string %string% to %string%:
+	parse:
+		continue
+	trigger:
+		StringToVarList(expr-1, expr-2)
+
+local function VarListToString(s: string) :: string:
+	
+	loop {%{_s}%::*}:
+		set {_indexBase64} to Encode(loop-index)
+		set {_valueBase64} to Encode("%loop-value%")
+		add "%{_indexBase64}%,%{_valueBase64}%" to {_final::*}
+	set {_final} to join {_final::*} with "|"
+	return {_final}
+	
+local function StringToVarList(s: string, s2: string):
+	loop split {_s} at "|":
+		set {_s::*} to loop-value split at ","
+		set {_index} to Decode({_s::1})
+		set {_value} to Decode({_s::2})
+		set {%{_s2}%::%{_index}%} to {_value}
+		
+local function Encode(s: string) :: string:
+	return new String(Base64.encodeBase64({_s}.getBytes()))
+	
+local function Decode(s: string) :: string:
+	return new String(Base64.decodeBase64({_s}.getBytes()))
 		
 on join:
 	wait a second
