@@ -1,4 +1,4 @@
-# Version: beta-14
+# Version: beta-15
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -13,19 +13,31 @@
 #
 
 import:
+	# General imports for making commands and whatnot work
 	java.io.File
 	java.nio.file.Files
 	java.nio.charset.StandardCharsets
 	java.net.URL
 	java.nio.file.StandardCopyOption
 	org.apache.commons.io.IOUtils
+	
+	# For making skull from url work
 	javax.imageio.ImageIO
 	org.bukkit.ChatColor
+	
+	# For making base 64 work
 	org.apache.commons.codec.binary.Base64
 	java.lang.String
 	
+	# For making Json work
+	com.google.gson.JsonParser
+	ch.njol.skript.variables.Variables
+	java.util.HashMap
+	java.util.TreeMap
+	java.io.Serializable
+	
 on load:
-	set {DJUtils::Version} to "beta-14"
+	set {DJUtils::Version} to "beta-15"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -67,76 +79,6 @@ local function Format(n: num) :: string:
 local function NegativeFormat(n: number) :: string:
 	set {_abs} to abs({_n})
 	return join "-", Format({_abs})
-
-expression small [caps ]of %string%:
-	return type: string
-	get:
-		set {_string} to expr-1
-		loop {DJUtils::Alphabet::*}:
-			replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
-		return {_string}
-		
-expression %string% in small[ caps]:
-	return type: string
-	get:
-		set {_string} to expr-1
-		loop {DJUtils::Alphabet::*}:
-			replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
-		return {_string}
-		
-expression formatted timespan %timespan%:
-	return type: string 
-	get:
-		set {_seconds} to (expr-1.getTicks() / 20)
-		set {_s} to mod({_seconds}, 60)
-		set {_m} to mod(floor({_seconds} / 60), 60)
-		set {_h} to mod(floor({_seconds} / 3600), 3600)
-		if {_h} = 0:
-			if {_m} = 0:
-				return "%{_s}%s"
-			return "%{_m}%m %{_s}%s"
-		return "%{_h}%h %{_m}%m %{_s}%s"
-		
-expression alts of %offline player%:
-	return type: offline players 
-	get:
-		set {_hashedIP} to {DJUtils::IpAddresses::%expr-1's uuid%}
-		loop {DJUtils::IpAddresses::%{_hashedIP}%::*}:
-			add loop-value parsed as offline player to {_p::*}
-		return {_p::*}
-
-expression formatted number %number%:
-	return type: string 
-	get:
-		return Format(expr-1)
-
-expression midpoint (of|between) %location% and %location%:
-	return type: location 
-	get:
-		set {_v} to vector from expr-1 to expr-2 
-		set vector length of {_v} to ((distance between expr-1 and expr-2) / 2)
-		return expr-1 ~ {_v}
-		
-expression encoded %string% with base 64:
-	return type: string 
-	get:
-		return new String(Base64.encodeBase64(expr-1.getBytes()))
-		
-expression decoded %string% with base 64:
-	return type: string 
-	get:
-		return new String(Base64.decodeBase64(expr-1.getBytes()))
-		
-expression base 64 [string] of %string%:
-	return type: string 
-	get:
-		return VarListToString(expr-1)
-		
-effect map base 64 string %string% to %string%:
-	parse:
-		continue
-	trigger:
-		StringToVarList(expr-1, expr-2)
 
 local function VarListToString(s: string) :: string:
 	
@@ -315,3 +257,126 @@ command /DJUtils [<text>] [<text>] [<text>]:
 			send "  &f⤻ <##A7C7E7>/djUtils Reload"
 			send "  &f⤻ <##A7C7E7>/djUtils Discord"
 			send "  &f⤻ <##A7C7E7>/djUtils Addon"
+			
+			
+#
+#
+# Generic Things
+#
+#
+
+expression small [caps ]of %string%:
+	return type: string
+	get:
+		set {_string} to expr-1
+		loop {DJUtils::Alphabet::*}:
+			replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
+		return {_string}
+		
+expression %string% in small[ caps]:
+	return type: string
+	get:
+		set {_string} to expr-1
+		loop {DJUtils::Alphabet::*}:
+			replace all loop-value in {_string} with {DJUtils::SmallCaps::%loop-index%}
+		return {_string}
+		
+expression formatted timespan %timespan%:
+	return type: string 
+	get:
+		set {_seconds} to (expr-1.getTicks() / 20)
+		set {_s} to mod({_seconds}, 60)
+		set {_m} to mod(floor({_seconds} / 60), 60)
+		set {_h} to mod(floor({_seconds} / 3600), 3600)
+		if {_h} = 0:
+			if {_m} = 0:
+				return "%{_s}%s"
+			return "%{_m}%m %{_s}%s"
+		return "%{_h}%h %{_m}%m %{_s}%s"
+		
+expression alts of %offline player%:
+	return type: offline players 
+	get:
+		set {_hashedIP} to {DJUtils::IpAddresses::%expr-1's uuid%}
+		loop {DJUtils::IpAddresses::%{_hashedIP}%::*}:
+			add loop-value parsed as offline player to {_p::*}
+		return {_p::*}
+
+expression formatted number %number%:
+	return type: string 
+	get:
+		return Format(expr-1)
+
+expression midpoint (of|between) %location% and %location%:
+	return type: location 
+	get:
+		set {_v} to vector from expr-1 to expr-2 
+		set vector length of {_v} to ((distance between expr-1 and expr-2) / 2)
+		return expr-1 ~ {_v}
+
+#
+#
+# Base 64
+#
+#
+expression encoded %string% with base 64:
+	return type: string 
+	get:
+		return new String(Base64.encodeBase64(expr-1.getBytes()))
+		
+expression decoded %string% with base 64:
+	return type: string 
+	get:
+		return new String(Base64.decodeBase64(expr-1.getBytes()))
+		
+expression base 64 [string] of %string%:
+	return type: string 
+	get:
+		return VarListToString(expr-1)
+		
+effect map base 64 string %string% to %string%:
+	parse:
+		continue
+	trigger:
+		StringToVarList(expr-1, expr-2)
+
+#
+#
+# Json
+#
+#
+
+expression json from %string%:
+	return type: object 
+	get: 
+		set {_value} to JsonParser.parseString(expr-1)
+		return {_value}
+
+function MapVarListToHashMap(s: string) :: object:
+	set {_s::*} to {_s} split at "::"
+	set {_current} to Variables.getVariables()
+	
+	loop {_s::*}:
+		set {_current} to {_current}.get(loop-value)
+		
+	broadcast "Current: %{_current}%"
+	
+	set {_clone} to {_current}.clone()
+	RecursiveRemoveUnserializable({_clone})
+	broadcast "&a%{_clone}%"
+	#set {map} to new HashMap()
+	#set {_map} to {map}
+	#RecursiveLoopAdd({_map}, "", {_current})
+	
+function RecursiveRemoveUnserializable(treemap: object):
+	loop ...({_treemap}.keySet()):
+		set {_value} to {_treemap}.get(loop-value)
+		if "%class of {_value}%" = "java.util.TreeMap":
+			RecursiveRemoveUnserializable({_value})
+		else:
+			if (the class "java.io.Serializable").class.isInstance({_value}) = false:
+				{_treemap}.remove(loop-value)
+
+		
+		
+			
