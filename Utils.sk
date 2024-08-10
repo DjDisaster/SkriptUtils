@@ -1,4 +1,4 @@
-# Version: beta-16
+# Version: beta-17
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -38,7 +38,7 @@ import:
 	com.fasterxml.jackson.databind.ObjectMapper
 	
 on load:
-	set {DJUtils::Version} to "beta-16"
+	set {DJUtils::Version} to "beta-17"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -89,7 +89,7 @@ function Format(n: num) :: string:
 	return "%(({_n} / (1000.0^(({_c}) - 1))) / 1000)%%{DJUtils::NumberFormat::%({_c}+1)%}%"
 	
 function Unformat(s: string) :: number:
-	return (-1 * Unformat({_s}.substring(1))) if {_s}.substring(0,1) = "-"
+	return (-1 * abs(Unformat({_s}.substring(1)))) if {_s}.substring(0,1) = "-"
 	
 	set {_phase} to 1
 	set {_str} to ""
