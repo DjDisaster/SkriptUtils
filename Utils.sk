@@ -345,7 +345,7 @@ expression formatted number %number%:
 		return Format(expr-1)
 		
 expression unformatted number %string%:
-	return type: string 
+	return type: number 
 	get:
 		return Unformat(expr-1)
 
