@@ -1,4 +1,4 @@
-# Version: beta-15
+# Version: beta-16
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -35,14 +35,26 @@ import:
 	java.util.HashMap
 	java.util.TreeMap
 	java.io.Serializable
+	com.fasterxml.jackson.databind.ObjectMapper
 	
 on load:
-	set {DJUtils::Version} to "beta-15"
+	set {DJUtils::Version} to "beta-16"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
 	set {DJUtils::SmallCaps::*} to "ᴀ|ʙ|ᴄ|ᴅ|ᴇ|ғ|ɢ|ʜ|ɪ|ᴊ|ᴋ|ʟ|ᴍ|ɴ|ᴏ|ᴘ|ǫ|ʀ|s|ᴛ|ᴜ|ᴠ|ᴡ|x|ʏ|ᴢ" split at "|"
 	set {DJUtils::NumberFormat::*} to (",k,m,b,t,qa,qn,sx,sp,oc,no,dc,ud,dd,td,qad,qnd,sxd,spd,ocd,nod,vg,unvg,dovg,trvg,quatvg,quinv,sexvg,septvg,octvg,novvg,trig,untrig,dotrig,tetrig,quatrig,quintrig,sextrig,septrig,octrig,novtrig,quadg,unquadg,doquadg,tequadg,quadorquadg,quinquadg,sexquadg,sepquadg,octoquadg,novquadg,quinquag,unquinquag,doquinquag,tequinquag,quadoquinquag,quinquinquag,sexquinquag,sepquinquag,octoquinquag,novquinquag,sexag,unsexag,dosexag,tesexag,quadsexag,quinsexag,sexsexag,sepsexag,octosexag,novsexag,septg,unseptg,doseptg,teseptg,quadoseptg,quinseptg,sexseptg,sepseptg,octoseptg,novseptg,octog,unoctog,dooctog,teoctog,quadoctog,quinoctog,sexoctog,sepoctog,octooctog,novoctog,nonag,unnonag,dononag,tenonag,quadononag,quinnonag,sexnonag,sepnonag,octononag,novnonag,centg,uncentg" split at ",")
+	
+	set {_n} to 0
+	loop {DJUtils::NumberFormat::*}:
+		# .0 is to force a double to prevent bugs.
+		set {DJUtils::ReverseNumberFormat::%loop-value%} to (1000.0 ^ {_n})
+		add 1 to {_n}
+		
+	delete {DJUtils::ValidFormatNumbers::*}
+	loop split ("1,2,3,4,5,6,7,8,9,0,.") at ",":
+		set {DJUtils::ValidFormatNumbers::%loop-value%} to true
+		
 	set {DJUtils::FileName} to name of script
 
 	set {DJUtils::AddonsFolder} to "plugins/Skript/scripts/djutils-addons"
@@ -69,13 +81,38 @@ on join:
 		add player's uuid to {DJUtils::IpAddresses::%{_hash}%::*} 
 	set {DJUtils::IpAddresses::%player's uuid%} to {_hash}
 
-local function Format(n: num) :: string:
+function Format(n: num) :: string:
 	return "%{_n}%" if {_n} = (10.0 ^ 309.0) or (-10.0 ^ 309.0)
 	return NegativeFormat({_n}) if {_n} < 0
 	return "%{_n}%" if {_n} < 1
 	set {_c} to (floor(log({_n}, 1000)))
 	return "%(({_n} / (1000.0^(({_c}) - 1))) / 1000)%%{DJUtils::NumberFormat::%({_c}+1)%}%"
 	
+function Unformat(s: string) :: number:
+	return (-1 * Unformat({_s}.substring(1))) if {_s}.substring(0,1) = "-"
+	
+	set {_phase} to 1
+	set {_str} to ""
+	loop ...{_s}.toCharArray():
+		# Stringifying is requires here, no idea why 
+		# You cannot inline in the variable
+		set {_a} to "%loop-value%"
+		if {DJUtils::ValidFormatNumbers::%{_a}%} = true:
+			# Invalid input
+			return -1 if {_phase} = 2
+			set {_num} to join {_num}, {_a}
+		else:
+			set {_phase} to 2
+			set {_str} to join {_str}, "%loop-value%"
+			
+	set {_multitude} to {DJUtils::ReverseNumberFormat::%{_str}%}
+	
+	# Return -1 (invalid) if no match is found.
+	if {_multitude} is not set:
+		return -1
+	
+	return ({_num} parsed as number) * {_multitude}
+		
 local function NegativeFormat(n: number) :: string:
 	set {_abs} to abs({_n})
 	return join "-", Format({_abs})
@@ -177,7 +214,7 @@ function SkullChat(p: object, d: number) :: strings:
 	set {_size} to {_d}
 	set {_mult1} to {_height} / {_size}
 	set {_mult2} to {_width} / {_size}
-	broadcast "%{_size}%"
+
 	loop {_size} times:
 		loop {_size} times:
 			set {_rgb} to {_image}.getRGB((((loop-value-1) - 1) * {_mult2}), (((loop-value-2) - 1) * {_mult1}))
@@ -306,6 +343,11 @@ expression formatted number %number%:
 	return type: string 
 	get:
 		return Format(expr-1)
+		
+expression unformatted number %string%:
+	return type: string 
+	get:
+		return Unformat(expr-1)
 
 expression midpoint (of|between) %location% and %location%:
 	return type: location 
@@ -359,11 +401,11 @@ function MapVarListToHashMap(s: string) :: object:
 	loop {_s::*}:
 		set {_current} to {_current}.get(loop-value)
 		
-	broadcast "Current: %{_current}%"
+
 	
 	set {_clone} to {_current}.clone()
 	RecursiveRemoveUnserializable({_clone})
-	broadcast "&a%{_clone}%"
+
 	#set {map} to new HashMap()
 	#set {_map} to {map}
 	#RecursiveLoopAdd({_map}, "", {_current})
