@@ -1,4 +1,4 @@
-# Version: beta-17
+# Version: beta-18
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -37,8 +37,20 @@ import:
 	java.io.Serializable
 	com.fasterxml.jackson.databind.ObjectMapper
 	
+	# For Maps
+	org.bukkit.Bukkit
+	
+	net.minecraft.network.protocol.game.ClientboundMapItemDataPacket
+	net.minecraft.world.level.saveddata.maps.MapId
+	net.minecraft.world.level.saveddata.maps.MapDecoration
+	net.minecraft.world.level.saveddata.maps.MapDecorationType
+	net.minecraft.world.level.saveddata.maps.MapItemSavedData$MapPatch
+	
+	java.util.ArrayList
+	
+	
 on load:
-	set {DJUtils::Version} to "beta-17"
+	set {DJUtils::Version} to "beta-18"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -419,6 +431,43 @@ function RecursiveRemoveUnserializable(treemap: object):
 			if (the class "java.io.Serializable").class.isInstance({_value}) = false:
 				{_treemap}.remove(loop-value)
 
+#
+#
+# Maps
+#
+#
+	
+function SetClientMap(id: number):
+	set {_view} to Bukkit.getMap({_id})
+	set {_renderer} to {_view}.getRenderers().get(0)
+	{_view}.removeRenderer({_renderer})
+	
+	
+	
+function SetClientPixel(p: player, mapID: number, x: number, y: number, b: number):
+	
+	set {_player} to {_p}.getHandle()	
+	set {_view} to Bukkit.getMap({_mapID})
+	
+	set {_id} to new MapId({_mapID})
+	set {_scale} to {_view}.getScale().ordinal().byteValue()
+	set {_locked} to {_view}.isLocked()
+	
+	#set {_playerType} to GetDecorationType(MapDecorationType.PLAYER)
+	set {_decorations} to null
+	
+	set {_colors} to [50.byteValue()]
+	set {_mapPatch} to new MapPatch({_x}, {_y}, 1, 1, [{_b}.byteValue()]) 
+	
+	set {_packet} to new ClientboundMapItemDataPacket({_id}, {_scale}, {_locked}, {_decorations}, {_mapPatch})
+	
+	{_player}.connection.send({_packet})
+	
+	
+function GetDecorationType(object: type) :: object:
+	set {_registry} to (the class "net.minecraft.core.registries.BuiltInRegistries").MAP_DECORATION_TYPE
+	return {_registry}.getHolderOrThrow({_type})
+	
+	
+	
 		
-		
-			
