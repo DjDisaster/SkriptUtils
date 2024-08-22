@@ -1,4 +1,4 @@
-# Version: beta-2
+# Version: beta-3
 # Do not delete or modify the version line.
 
 # This is an extention for DJUtils.
@@ -177,8 +177,6 @@ effect send [message] %string% to channel %object%:
 	parse:
 		continue 
 	trigger:
-		if {DiscordBots::%expr-1%} is not set:
-			stop 
 		expr-2.sendMessage(expr-1).queue()
 		
 on unload:
