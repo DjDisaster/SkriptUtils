@@ -1,4 +1,4 @@
-# Version: beta-18
+# Version: beta-19
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -20,6 +20,7 @@ import:
 	java.net.URL
 	java.nio.file.StandardCopyOption
 	org.apache.commons.io.IOUtils
+	
 	
 	# For making skull from url work
 	javax.imageio.ImageIO
@@ -47,10 +48,13 @@ import:
 	net.minecraft.world.level.saveddata.maps.MapItemSavedData$MapPatch
 	
 	java.util.ArrayList
+	java.util.Random 
+
+
 	
 	
 on load:
-	set {DJUtils::Version} to "beta-18"
+	set {DJUtils::Version} to "beta-19"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -342,6 +346,20 @@ expression formatted timespan %timespan%:
 				return "%{_s}%s"
 			return "%{_m}%m %{_s}%s"
 		return "%{_h}%h %{_m}%m %{_s}%s"
+		
+		
+expression new seeded random using %number%:
+	return type: object 
+	get:
+		return new Random(expr-1)
+expression seeded random number (from|between) %number% (to|and) %number% using [seed] %object%:	
+	return type: number
+	get:
+		return ((expr-3).nextDouble(max(expr-1,expr-2) - min(expr-1,expr-2)) - min(expr-1,expr-2))
+expression seeded random integer (from|between) %number% (to|and) %number% using [seed] %object%:	
+	return type: number
+	get:
+		return ((expr-3).nextInt(max(expr-1,expr-2) - min(expr-1,expr-2)) - min(expr-1,expr-2))
 		
 expression alts of %offline player%:
 	return type: offline players 
