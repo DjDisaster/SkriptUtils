@@ -1,4 +1,4 @@
-# Version: beta-19
+# Version: beta-20
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -54,7 +54,7 @@ import:
 	
 	
 on load:
-	set {DJUtils::Version} to "beta-19"
+	set {DJUtils::Version} to "beta-20"
 	# Pre-loading to increase efficiency at cost of parse time.
 	set {DJUtils::Alphabet::*} to "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z" split at "|"
 
@@ -355,11 +355,13 @@ expression new seeded random using %number%:
 expression seeded random number (from|between) %number% (to|and) %number% using [seed] %object%:	
 	return type: number
 	get:
-		return ((expr-3).nextDouble(max(expr-1,expr-2) - min(expr-1,expr-2)) - min(expr-1,expr-2))
+		set {_min} to min(expr-1, expr-2)
+		return (expr-3).nextDouble((max(expr-1, expr-2) - {_min})) + {_min}
 expression seeded random integer (from|between) %number% (to|and) %number% using [seed] %object%:	
 	return type: number
 	get:
-		return ((expr-3).nextInt(max(expr-1,expr-2) - min(expr-1,expr-2)) - min(expr-1,expr-2))
+		set {_min} to min(expr-1, expr-2)
+		return (expr-3).nextInt((max(expr-1, expr-2) - {_min})) + {_min}
 		
 expression alts of %offline player%:
 	return type: offline players 
