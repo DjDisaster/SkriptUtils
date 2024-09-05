@@ -1,4 +1,4 @@
-# Version: beta-20
+# Version: beta-21
 # Do not delete or modify the version line.
 
 # Skript utilities 
@@ -40,12 +40,15 @@ import:
 	
 	# For Maps
 	org.bukkit.Bukkit
+	org.bukkit.map.MapPalette
+	java.awt.Color
 	
 	net.minecraft.network.protocol.game.ClientboundMapItemDataPacket
 	net.minecraft.world.level.saveddata.maps.MapId
 	net.minecraft.world.level.saveddata.maps.MapDecoration
 	net.minecraft.world.level.saveddata.maps.MapDecorationType
 	net.minecraft.world.level.saveddata.maps.MapItemSavedData$MapPatch
+	net.minecraft.core.registries.BuiltInRegistries
 	
 	java.util.ArrayList
 	java.util.Random 
@@ -457,17 +460,47 @@ function RecursiveRemoveUnserializable(treemap: object):
 #
 #
 	
-function SetClientMap(id: number):
+function SetClientMap(id: integer):
 	set {_view} to Bukkit.getMap({_id})
 	set {_renderer} to {_view}.getRenderers().get(0)
 	{_view}.removeRenderer({_renderer})
 	
+function NewClientMap() :: integer:
+	set {_map} to Bukkit.createMap(world of random element out of all players)
+	set {_id} to {_map}.getId()
+	SetClientMap({_id})
+	return {_id}
 	
 	
-function SetClientPixel(p: player, mapID: number, x: number, y: number, b: number):
+	
+	
+function SetupClientMap(mapID: integer):
+	set {_view} to Bukkit.getMap({_mapID})
+	{_view}.removeRenderer({_view}.getRenderers()[0])
+	
+function GetMapID(i: item) :: integer:
+	return {_i}.getItemMeta().getMapId()
+	
+function SetMapID(i: item, id: integer) :: item type:	
+	set {_meta} to {_i}.getItemMeta()
+	{_meta}.setMapId({_id})
+	{_i}.setItemMeta({_meta})
+	return {_i}
+	
+function GetClientMap(id: number) :: item:
+	set {_i} to 1 of filled map 
+	set {_i} to {_i}.getItem()
+	set {_i} to SetMapID({_i}, {_id})
+	return {_i}
+	
+	
+function SetClientPixel(p: player, mapID: integer, x: integer, y: integer, r: integer, g: integer, b: integer):
+	
+	set {_colour} to MapPalette.matchColor({_r},{_g},{_b})
 	
 	set {_player} to {_p}.getHandle()	
 	set {_view} to Bukkit.getMap({_mapID})
+	{_view}.getRenderers().clear()
 	
 	set {_id} to new MapId({_mapID})
 	set {_scale} to {_view}.getScale().ordinal().byteValue()
@@ -476,16 +509,17 @@ function SetClientPixel(p: player, mapID: number, x: number, y: number, b: numbe
 	#set {_playerType} to GetDecorationType(MapDecorationType.PLAYER)
 	set {_decorations} to null
 	
-	set {_colors} to [50.byteValue()]
-	set {_mapPatch} to new MapPatch({_x}, {_y}, 1, 1, [{_b}.byteValue()]) 
+	set {_mapPatch} to new MapPatch({_x}, {_y}, 1, 1, [{_colour}]) 
 	
 	set {_packet} to new ClientboundMapItemDataPacket({_id}, {_scale}, {_locked}, {_decorations}, {_mapPatch})
 	
 	{_player}.connection.send({_packet})
 	
 	
+	
+	
 function GetDecorationType(object: type) :: object:
-	set {_registry} to (the class "net.minecraft.core.registries.BuiltInRegistries").MAP_DECORATION_TYPE
+	set {_registry} to BuiltInRegistries.MAP_DECORATION_TYPE
 	return {_registry}.getHolderOrThrow({_type})
 	
 	
